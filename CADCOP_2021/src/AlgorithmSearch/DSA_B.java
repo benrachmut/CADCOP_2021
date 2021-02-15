@@ -8,7 +8,7 @@ import Messages.MsgAlgorithm;
 import Messages.MsgValueAssignmnet;
 
 abstract public class DSA_B extends AgentVariableSearch {
-	protected static double stochastic = 1.0;
+	protected static double stochastic = 0.7;
 	protected double rndForDebug; // for debug
 	protected Random rndStochastic;
 	protected boolean canCompute;

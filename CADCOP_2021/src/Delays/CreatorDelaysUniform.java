@@ -8,7 +8,7 @@ import Delays.ProtocolDelay;
 
 public class CreatorDelaysUniform extends CreatorDelays {
 
-	private double[] UBs = {500,1000,1500,2000,2500,3000,3500,4000,4500,5000};
+	private double[] UBs = {250,500,1000,1500,2000,3000};
 
 	@Override
 	protected ProtocolDelay createDefultProtocol(double gamma) {

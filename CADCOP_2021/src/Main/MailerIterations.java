@@ -38,16 +38,27 @@ public class MailerIterations extends Mailer {
 	@Override
 	public void execute() {
 		for (int iteration = 0; iteration < this.terminationTime; iteration++) {
-			m_iteration = iteration;
-			agentsReactToMsgs(iteration);
-			createData(iteration);
-
-			List<Msg> msgsFromInbox = inbox.extract();
-			placeMsgsFromInboxInMessageBox(msgsFromInbox);
 			
+			System.out.println("#############ITERATION="+iteration+"#############");
+			if (iteration == 28) {
+				System.out.println("ahhhhhhhhhhh");
+			}
+			m_iteration = iteration;
+			createData(iteration);
+			List<Msg> msgsFromInbox = inbox.extract();
+			placeMsgsFromInboxInMessageBox(msgsFromInbox);			
 			List<Msg> msgToSend = this.handleDelay();
 			agentsRecieveMsgs(msgToSend);
+			extractFromInbox();
+			
 		}
+	}
+
+	private void extractFromInbox() {
+		for (Agent agent : dcop.getAllAgents()) {
+			agent.extractFromInboxUsedByMailerIteration();
+		}
+		
 	}
 
 	private void printContexts() {
@@ -121,8 +132,8 @@ public class MailerIterations extends Mailer {
 		for (Agent agent : dcop.getAllAgents()) {
 
 			if (iteration == 0) {
-				agent.resetAgent();
-				agent.initialize(); // abstract method in agents
+				//agent.resetAgent();
+			//	agent.initialize(); // abstract method in agents
 			} else {
 				agent.reactionToAlgorithmicMsgs();
 				agentsCommunicateThierAction(agent);	

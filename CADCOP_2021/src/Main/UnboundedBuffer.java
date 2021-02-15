@@ -25,7 +25,7 @@ public class UnboundedBuffer<T>{
 	}
 
 	public synchronized List<T> extract() {
-		while (buffer.isEmpty()) {
+		while (buffer.isEmpty() ) {
 			try {
 				this.wait();
 			} catch (InterruptedException e) {

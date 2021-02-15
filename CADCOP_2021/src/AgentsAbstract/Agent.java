@@ -370,4 +370,13 @@ public abstract class Agent implements Runnable, Comparable<Agent> {
 
 	public abstract void changeRecieveFlagsToFalse();
 
+	public void extractFromInboxUsedByMailerIteration() {
+		if (!this.inbox.isEmpty()) {
+			List<Msg>msgs = this.inbox.extract();
+			handleMsgs(msgs);
+			msgs.removeAll(msgs);
+		}
+		
+	}
+
 }

@@ -48,6 +48,7 @@ import Formation.ColorFormation;
 import Formation.DFS;
 import Formation.Formation;
 import Main.Mailer;
+import Main.MailerThread;
 import Main.MainSimulator;
 import Main.UnboundedBuffer;
 import Messages.Msg;
@@ -352,7 +353,7 @@ public abstract class Dcop {
 
 			AgentFunction af = null;
 
-			if(agentType == 101) {
+			if (agentType == 101) {
 				af = new MaxSumStandardFunctionDelay_SY(dcopId, D, av1.getId(), av2.getId(), constraints);
 				this.agentFunctions.add(af);
 				this.agentsAll.add(af);
@@ -362,14 +363,13 @@ public abstract class Dcop {
 
 				AgentVariableInference agentVariableThatWillHoldFunction = whichAgentShouldHoldFunctionNode(av1, av2);
 				agentVariableThatWillHoldFunction.holdTheFunctionNode(af);
-				
-				
+
 			}
-			
-			if(agentType == 102) {
-							
-				
-				af = new MaxSumSplitConstraintFactorGraphDelay_SY(dcopId, D, av1.getId() + 1, av2.getId() + 1,constraints); // Will create a new MaxSumSplitConstraintFactorGraphSync
+
+			if (agentType == 102) {
+
+				af = new MaxSumSplitConstraintFactorGraphDelay_SY(dcopId, D, av1.getId() + 1, av2.getId() + 1,
+						constraints); // Will create a new MaxSumSplitConstraintFactorGraphSync
 				MaxSumSplitConstraintFactorGraphDelay_SY splitConstraintAgent = (MaxSumSplitConstraintFactorGraphDelay_SY) af;
 
 				List<MaxSumStandardFunctionDelay_SY> splitList = splitConstraintAgent.getSplitFunctionNodes();
@@ -389,13 +389,10 @@ public abstract class Dcop {
 
 				MaxSumStandardFunction af2 = splitConstraintAgent.getSecondSplit();
 				av2.holdTheFunctionNode(af2);
-				// af2.variableNodeThatHoldsMe(av2);	
-							
+				// af2.variableNodeThatHoldsMe(av2);
+
 			}
-			
-			
-			
-			
+
 			if (agentType == 103) {
 				af = new MaxSumStandardFunctionDelay(dcopId, D, av1.getId(), av2.getId(), constraints);
 				this.agentFunctions.add(af);
@@ -411,7 +408,7 @@ public abstract class Dcop {
 			}
 
 			if (agentType == 104) {
-				
+
 				af = new MaxSumSplitConstraintFactorGraphDelay(dcopId, D, av1.getId() + 1, av2.getId() + 1,
 						constraints); // Will create a new MaxSumSplitConstraintFactorGraphSync
 				MaxSumSplitConstraintFactorGraphDelay splitConstraintAgent = (MaxSumSplitConstraintFactorGraphDelay) af;
@@ -1037,11 +1034,14 @@ public abstract class Dcop {
 		for (Agent a : agentsAll) {
 			a.resetAgent();
 			a.initialize();
-			agentsThreads.add(new Thread(a));
+			if (MainSimulator.isThreadMailer) {
+				agentsThreads.add(new Thread(a));
+			}
 		}
-
-		for (Thread thread : agentsThreads) {
-			thread.start();
+		if (MainSimulator.isThreadMailer) {
+			for (Thread thread : agentsThreads) {
+				thread.start();
+			}
 		}
 
 	}

@@ -44,7 +44,7 @@ public class MainSimulator {
 
 	// ------------------------------**Implementation**
 	public static boolean isThreadMailer = false; // determines the mailers type
-	public static boolean isAtomicTime= false;
+	public static boolean isAtomicTime= true;
 	//public static int dividAtomicTime = 1;
 	
 	public static int multiplicationTime = 1;//2;
@@ -67,11 +67,11 @@ public class MainSimulator {
 	public static int start = 0;
 	public static int end = 100;
 	public static int end_temp = start; //DO NOT CHANGE
-	public static long termination = 5000;//24000000000l ;
+	public static long termination = 5000;//500000;
 	private static int everyHowManyExcel = 100;
 
 	// ------------------------------**PROBLEM MANGNITUDE**
-	public static int A = 50; // amount of agents
+	public static int A = 5; // amount of agents
 	
 	private static int D = 10;
 
@@ -105,7 +105,7 @@ public class MainSimulator {
 	 * ------- 100 =
 	 * 101 = MaxSum-SY; 101 = MaxSum_split-SY; 103 = MaxSum-ASY; 104 = MaxSum_split-ASY;
 	 */
-	public static int agentType = 1;
+	public static int agentType = 11;
 
 	public static boolean isMaxSumSyDebug = false;
 	public static boolean isThreadDebug = false;
@@ -117,7 +117,7 @@ public class MainSimulator {
 	public static boolean isAnytimeDebug = true;
 	public static boolean isMaxSumMailerDebug = false; 
 	public static boolean isFactorGraphDebug = false;
-	public static boolean isMGM2Debug = false;
+	public static boolean isMGM2Debug = true;
 	public static boolean isMaxSumDebug = false;
 	public static boolean isMaxSumThreadDebug = false;
 

@@ -532,7 +532,7 @@ abstract public class MGM2 extends AgentVariableSearch {
 
 					MsgMgm2Phase3LR mlr2 = new MsgMgm2Phase3LR(this.nodeId, recieverNodeId, this.phase2IntMyLr,
 							this.timeStampCounter, this.time);
-					msgs.add(mlr);
+					msgs.add(mlr2);
 
 				}
 
