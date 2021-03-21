@@ -43,12 +43,12 @@ public class MainSimulator {
 	public static boolean sendOnlyIfChange = false;
 
 	// ------------------------------**Implementation**
-	public static boolean isThreadMailer = false; // determines the mailers type
+	public static boolean isThreadMailer = true; // determines the mailers type
 	public static boolean isAtomicTime= true;
 	//public static int dividAtomicTime = 1;
 	
 	public static int multiplicationTime = 1;//2;
-	public static int howManyIterationForCalculation = 100;//5000000;
+	public static int howManyIterationForCalculation = 1000;//5000000;
 
 	
 
@@ -64,14 +64,14 @@ public class MainSimulator {
 	// --------------------------------**Experiment Repetitions**
 	public static int div=1;
 
-	public static int start = 0;
-	public static int end = 100;
+	public static int start = 3;
+	public static int end = start+1;
 	public static int end_temp = start; //DO NOT CHANGE
-	public static long termination = 5000;//500000;
+	public static long termination = 2000000;//200000;//1000000;//;
 	private static int everyHowManyExcel = 100;
 
 	// ------------------------------**PROBLEM MANGNITUDE**
-	public static int A = 5; // amount of agents
+	public static int A = 50; // amount of agents
 	
 	private static int D = 10;
 
@@ -91,7 +91,7 @@ public class MainSimulator {
 	public static double dcopGraphColoringP1 = 0.05;// Probability for agents to have constraints
 	public static int costLbColor = 10;
 	public static int costUbColor = 100;
-	// 3 = Graph Coloring
+	// 3 = scale free
 	public static int dcopScaleHubs = 10; // number of agents with central weight
 	public static int dcopScaleNeighbors = 3; // number of neighbors (not including policy of hubs
 	public static double dcopScaleP2 = 1;// Probability for two values in domain between neighbors to have constraints
@@ -105,6 +105,8 @@ public class MainSimulator {
 	 * ------- 100 =
 	 * 101 = MaxSum-SY; 101 = MaxSum_split-SY; 103 = MaxSum-ASY; 104 = MaxSum_split-ASY;
 	 */
+	
+	//4,7,11
 	public static int agentType = 11;
 
 	public static boolean isMaxSumSyDebug = false;
@@ -117,7 +119,7 @@ public class MainSimulator {
 	public static boolean isAnytimeDebug = true;
 	public static boolean isMaxSumMailerDebug = false; 
 	public static boolean isFactorGraphDebug = false;
-	public static boolean isMGM2Debug = true;
+	public static boolean isMGM2Debug = false;
 	public static boolean isMaxSumDebug = false;
 	public static boolean isMaxSumThreadDebug = false;
 

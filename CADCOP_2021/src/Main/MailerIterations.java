@@ -45,7 +45,10 @@ public class MailerIterations extends Mailer {
 			}
 			m_iteration = iteration;
 			createData(iteration);
-			List<Msg> msgsFromInbox = inbox.extract();
+			List<Msg> msgsFromInbox = new ArrayList<Msg>();
+			if (!inbox.isEmpty()) {
+				msgsFromInbox = inbox.extract();
+			}
 			placeMsgsFromInboxInMessageBox(msgsFromInbox);			
 			List<Msg> msgToSend = this.handleDelay();
 			agentsRecieveMsgs(msgToSend);

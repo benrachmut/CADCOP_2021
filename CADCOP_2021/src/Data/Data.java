@@ -293,6 +293,10 @@ public class Data {
 			return this.globalCost;
 		}
 		Double lastAnytimeGlobal = mailer.getLastGlobalAnytimeCost();
+		
+		if (MainSimulator.agentType==7) {
+			return  0.0 ;
+		}
 		if (lastAnytimeGlobal == 0 || this.globalCost < lastAnytimeGlobal) {
 			return this.globalCost;
 		} else {
