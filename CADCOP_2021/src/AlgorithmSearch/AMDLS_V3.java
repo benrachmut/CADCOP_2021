@@ -63,7 +63,6 @@ public class AMDLS_V3 extends AMDLS_V2 {
 			sendAMDLSColorMsgs();
 			this.myCounter = 1;
 			firstFlag = true;
-
 			isWaitingToSetColor = false;
 		} else {
 			this.valueAssignment = Integer.MIN_VALUE;

@@ -150,7 +150,7 @@ public class NodeId implements Comparable<NodeId> {
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
-		return this.id1+"."+this.id2;
+		return "A_"+this.id1;
 	}
 	
 	

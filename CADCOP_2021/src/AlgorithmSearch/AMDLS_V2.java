@@ -19,7 +19,7 @@ import Messages.MsgAlgorithm;
 public class AMDLS_V2 extends AMDLS_V1 {
 	public static int structureHeuristic = 1; // 1:by index, 2:delta_max, 3:delta_min
 	protected boolean isWaitingToSetColor;
-	private TreeMap<NodeId, Integer> neighborColors;
+	protected TreeMap<NodeId, Integer> neighborColors;
 	protected boolean canSetColorFlag;
 
 	public AMDLS_V2(int dcopId, int D, int agentId) {
@@ -88,6 +88,10 @@ public class AMDLS_V2 extends AMDLS_V1 {
 			currentColor = currentColor + 1;
 		}
 		this.myColor = currentColor;
+		
+		if (MainSimulator.is2OptDebug) {
+			System.out.println("A_"+this.id+" color: "+this.myColor);
+		}
 	}
 
 	private boolean isColorValid(Integer currentColor) {
@@ -222,8 +226,6 @@ public class AMDLS_V2 extends AMDLS_V1 {
 				System.out.println(this+" puts "+msgAlgorithm+" in future");
 			}
 				future.add((MsgAMDLS)msgAlgorithm);
-			
-
 			}
 		/*
 		if (!canSetColor() && this.isWaitingToSetColor && msgAlgorithm instanceof MsgAMDLSColor) {

@@ -64,10 +64,10 @@ public class MainSimulator {
 	// --------------------------------**Experiment Repetitions**
 	public static int div=1;
 
-	public static int start = 3;
+	public static int start = 0;
 	public static int end = start+1;
 	public static int end_temp = start; //DO NOT CHANGE
-	public static long termination = 2000000;//200000;//1000000;//;
+	public static long termination = 4000000;//200000;//1000000;//;
 	private static int everyHowManyExcel = 100;
 
 	// ------------------------------**PROBLEM MANGNITUDE**
@@ -107,7 +107,7 @@ public class MainSimulator {
 	 */
 	
 	//4,7,11
-	public static int agentType = 11;
+	public static int agentType = 7;
 
 	public static boolean isMaxSumSyDebug = false;
 	public static boolean isThreadDebug = false;
@@ -122,6 +122,7 @@ public class MainSimulator {
 	public static boolean isMGM2Debug = false;
 	public static boolean isMaxSumDebug = false;
 	public static boolean isMaxSumThreadDebug = false;
+	public static boolean is2OptDebug = false;
 
 	/*
 	 * delayTypes: 0 = non, 1 = normal, 2 = uniform
