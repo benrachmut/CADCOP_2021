@@ -67,17 +67,7 @@ public class AMDLS_V2 extends AMDLS_V1 {
 	}
 
 	// done
-	@Override
-	public void initialize() {
-		this.isWithTimeStamp = false;
-		if (canSetColorInitilize()) {
-			chooseColor();
-			sendAMDLSColorMsgs();
-			isWaitingToSetColor = false;
-		}else {
-			this.myCounter = 0;
-		}
-	}
+	
 
 	protected void chooseColor() {
 		Integer currentColor = 1;
@@ -89,7 +79,7 @@ public class AMDLS_V2 extends AMDLS_V1 {
 		}
 		this.myColor = currentColor;
 		
-		if (MainSimulator.is2OptDebug) {
+		if (MainSimulator.is2OptDebug|| MainSimulator.isAMDLSDistributedDebug) {
 			System.out.println("A_"+this.id+" color: "+this.myColor);
 		}
 	}
@@ -375,9 +365,9 @@ public class AMDLS_V2 extends AMDLS_V1 {
 
 	public boolean getDidComputeInThisIteration() {
 
-		if (MainSimulator.isAMDLSDistributedDebug && this.id== 6 ) {
-			printAMDLSstatus();
-			System.out.println(this+" compute in this iteration: "+ ( canSetColorFlag || consistentFlag));
+		if (MainSimulator.isAMDLSDistributedDebug) {
+		//	printAMDLSstatus();
+		//	System.out.println(this+" compute in this iteration: "+ ( canSetColorFlag || consistentFlag));
 		}
 		return canSetColorFlag || consistentFlag;
 	}
@@ -411,8 +401,6 @@ public class AMDLS_V2 extends AMDLS_V1 {
 			if (releaseFutureMsgs()) {	
 				reactionToAlgorithmicMsgs();
 			}
-			
-			
 			boolean aboveConsistent = isAboveConsistent();
 			boolean belowConsistent = isBelowConsistent();
 			if (aboveConsistent && belowConsistent && allNeighborsHaveColor()) {

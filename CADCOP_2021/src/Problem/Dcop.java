@@ -34,6 +34,7 @@ import AlgorithmInference.MaxSumStandardVaribleSync;
 import AlgorithmSearch.AMDLS_V1;
 import AlgorithmSearch.AMDLS_V2;
 import AlgorithmSearch.AMDLS_V3;
+import AlgorithmSearch.AMDLS_V4;
 import AlgorithmSearch.DSA_B_ASY;
 import AlgorithmSearch.DSA_B_SY;
 import AlgorithmSearch.DSA_SDP_ASY;
@@ -162,6 +163,9 @@ public abstract class Dcop {
 		}
 		if (agentType == 11) {
 			ans = new MGM2_SY(dcopId, D, agentId);
+		}
+		if (agentType == 12) {
+			ans = new AMDLS_V4(dcopId, D, agentId);
 		}
 		/*
 		 * if (agentType == 100) {

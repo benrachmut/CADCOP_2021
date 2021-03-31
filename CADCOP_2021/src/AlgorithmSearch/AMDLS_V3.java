@@ -12,28 +12,24 @@ public class AMDLS_V3 extends AMDLS_V2 {
 	private static double stochasticInitial = 0;
 	private static double stochasticDecision = 1;
 
-	private boolean firstFlag;
-	private double rndStochasticInitial;
+
 	private Random stochasticDecisionRandom;
 
 	public AMDLS_V3(int dcopId, int D, int agentId) {
 		super(dcopId, D, agentId);
 		Random r = new Random(this.dcopId * 10 + this.id * 100);
-		this.rndStochasticInitial = r.nextDouble();
+		//this.rndStochasticInitial = r.nextDouble();
 		this.stochasticDecisionRandom = new Random(this.dcopId * 12 + this.id * 143);
-
-		firstFlag = false;
+		//firstFlag = false;
 	}
 
 	@Override
 	protected void resetAgentGivenParametersV3() {
-		// TODO Auto-generated method stub
 		super.resetAgentGivenParametersV3();
 		Random r = new Random(this.dcopId * 10 + this.id * 100);
-		this.rndStochasticInitial = r.nextDouble();
+		//this.rndStochasticInitial = r.nextDouble();
 		this.stochasticDecisionRandom = new Random(this.dcopId * 12 + this.id * 143);
-
-		firstFlag = false;
+		//firstFlag = false;
 	}
 
 	@Override
@@ -62,7 +58,7 @@ public class AMDLS_V3 extends AMDLS_V2 {
 			chooseColor();
 			sendAMDLSColorMsgs();
 			this.myCounter = 1;
-			firstFlag = true;
+			//firstFlag = true;
 			isWaitingToSetColor = false;
 		} else {
 			this.valueAssignment = Integer.MIN_VALUE;
@@ -71,7 +67,7 @@ public class AMDLS_V3 extends AMDLS_V2 {
 	}
 
 	protected boolean compute() {
-
+/*
 		if (this.rndStochasticInitial < stochasticInitial) {
 			if (firstFlag == false) {
 				this.myCounter = myCounter + 1;
@@ -96,7 +92,7 @@ public class AMDLS_V3 extends AMDLS_V2 {
 			return true;
 
 		} else {
-
+*/
 			boolean flag = false;
 			if (canSetColorFlag) {
 				chooseColor();
@@ -114,7 +110,10 @@ public class AMDLS_V3 extends AMDLS_V2 {
 				}
 
 			}
-		}
+		
+			
+			
+			//}
 		/*
 		 * if (flag) { double rnd = rndStochastic.nextDouble(); if ( rnd < stochastic )
 		 * { releaseFutureMsgs_distributed(); this.valueAssignment =
