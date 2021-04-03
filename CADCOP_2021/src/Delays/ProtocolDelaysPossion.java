@@ -1,13 +1,15 @@
 package Delays;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.Random;
 
 public class ProtocolDelaysPossion extends ProtocolDelay {
 
-	private double lambda;
+	private int lambda;
 	private Random rndLambdaAlgo, rndLambdaAnytime;
 
-	public ProtocolDelaysPossion(boolean isTimeStamp, double gamma, double lambda) {
+	public ProtocolDelaysPossion(boolean isTimeStamp, double gamma, int lambda) {
 		super(true, isTimeStamp, gamma);
 		this.lambda = lambda;
 	}
@@ -35,8 +37,12 @@ public class ProtocolDelaysPossion extends ProtocolDelay {
 		} else {
 			whichRand = rndLambdaAnytime;
 		}
-
-		double ans = getRandomPoission(whichRand, this.lambda);
+		double ans ;
+		if (this.lambda>=600) {
+			ans= getRandomBig(whichRand);
+		}else {
+			ans= getRandom(whichRand);
+		}
 		if (ans < 0) {
 			return 0.0;
 		} else {
@@ -44,7 +50,38 @@ public class ProtocolDelaysPossion extends ProtocolDelay {
 		}
 	}
 
-	public static double getRandomPoission(Random r, double lambda) {
+	public double getRandomBig(Random rand) {
+		
+		double ans = rand.nextGaussian() * Math.sqrt(this.lambda) + this.lambda;
+		System.out.println(ans);
+		return ans ;
+
+		//Also, bear in mind that the Poisson distribution P(λ) for large λ can be approximated 
+		//very well by the normal distribution N(λ, sqrt(λ)).
+		
+		
+		
+		/*
+		BigDecimal a = new BigDecimal(rand.nextDouble());
+		BigDecimal L = new BigDecimal(Math.exp(1));
+		BigDecimal one = new BigDecimal(1);
+		L = one.divide(L.pow(lambda), MathContext.DECIMAL64);
+
+		int k = 0;
+
+		BigDecimal p = new BigDecimal(1);
+
+		do {
+			k++;
+			p = p.multiply(new BigDecimal(rand.nextDouble()));
+		} while (p.compareTo(L) == 1);
+		System.out.println((k));
+
+		return k - 1;
+		*/
+	}
+
+	public double getRandom(Random r) {
 		double L = Math.exp(-lambda);
 		int k = 0;
 		double p = 1.0;
@@ -56,8 +93,36 @@ public class ProtocolDelaysPossion extends ProtocolDelay {
 		return k - 1;
 	}
 
+	/*
+	 * public double getRandomPoission(Random r) { double L = Math.exp(-lambda); int
+	 * k = 0; double p = 1.0; do { k++; p = p * r.nextDouble(); } while (p > L);
+	 * 
+	 * //System.out.println((k - 1)); return k - 1; }
+	 */
+	@Override
+	protected void setSeedsGivenParameters(int dcopId) {
+		rndLambdaAlgo = new Random(dcopId * 532);
+		rndLambdaAnytime = new Random(dcopId * 1005);
+	}
 
-	
-	
-	
+	@Override
+	protected String getStringParamets() {
+		// TODO Auto-generated method stub
+		return this.lambda + "";
+	}
+
+	@Override
+	protected boolean checkSpecificEquals(ProtocolDelay other) {
+		if (other instanceof ProtocolDelaysPossion) {
+			ProtocolDelaysPossion otherUniform = (ProtocolDelaysPossion) other;
+			boolean sameUB = otherUniform.getLambda() == this.lambda;
+			return sameUB;
+		}
+		return false;
+	}
+
+	private double getLambda() {
+		return this.lambda;
+	}
+
 }

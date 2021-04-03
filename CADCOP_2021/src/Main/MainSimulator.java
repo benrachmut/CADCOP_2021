@@ -18,8 +18,10 @@ import AgentsAbstract.AgentVariable;
 import AgentsAbstract.AgentVariableInference;
 import Data.Data;
 import Delays.CreatorDelays;
+import Delays.CreatorDelaysExponential;
 import Delays.CreatorDelaysNone;
 import Delays.CreatorDelaysNormal;
+import Delays.CreatorDelaysPossion;
 import Delays.CreatorDelaysUniform;
 import Delays.ProtocolDelay;
 import Down.CreatorDown;
@@ -48,7 +50,7 @@ public class MainSimulator {
 	//public static int dividAtomicTime = 1;
 	
 	public static int multiplicationTime = 1;//2;
-	public static int howManyIterationForCalculation = 1000;//5000000;
+	public static int howManyIterationForCalculation = 100; // sparse = 100,dense=100
 
 	
 
@@ -65,10 +67,10 @@ public class MainSimulator {
 	public static int div=1;
 
 	public static int start = 0;
-	public static int end = 100;
+	public static int end = 101;
 	public static int end_temp = start; //DO NOT CHANGE
-	public static long termination = 100000;//200000;//1000000;//;
-	private static int everyHowManyExcel = 100;
+	public static long termination = 10000;//200000;
+	private static int everyHowManyExcel = 50;
 
 	// ------------------------------**PROBLEM MANGNITUDE**
 	public static int A = 50; // amount of agents
@@ -81,9 +83,9 @@ public class MainSimulator {
 	/*
 	 * 1 = Random uniform; 2 = Graph Coloring; 3 = Scale Free Network
 	 */
-	public static int dcopBenchMark = 1;
+	public static int dcopBenchMark = 3;
 	// 1 = Random uniform
-	public static double dcopUniformP1 =0.7	;
+	public static double dcopUniformP1 =0.2;
 	public static double dcopUniformP2 = 1;// Probability for two values in domain between neighbors to have constraints
 	public static int costLbUniform = 1;
 	public static int costUbUniform = 100;
@@ -107,7 +109,8 @@ public class MainSimulator {
 	 */
 	
 	//4,7,11
-	public static int agentType = 12;
+	//1,3,8
+	public static int agentType = 8;
 
 	public static boolean isMaxSumSyDebug = false;
 	public static boolean isThreadDebug = false;
@@ -125,9 +128,9 @@ public class MainSimulator {
 	public static boolean is2OptDebug = false;
 
 	/*
-	 * delayTypes: 0 = non, 1 = normal, 2 = uniform
+	 * delayTypes: 0 = non, 1 = normal, 2 = uniform, 3 = Exponential, 4 = Possion
 	 */
-	public static int delayType = 2;
+	public static int delayType = 4;
 	public static CreatorDelays creatorDelay;
 
 	/*
@@ -250,7 +253,7 @@ public class MainSimulator {
 			}
 
 		}
-		fileName = fileType + "," + ans;
+		fileName = fileType+",delay_"+creatorDelay.name() + "," + ans;
 	}
 
 	private static void createMeansByProtocol() {
@@ -402,7 +405,10 @@ public class MainSimulator {
 
 	// ------------ 2. PROTOCOL CREATION------------
 	private static List<Protocol> createProtocols() {
-		List<ProtocolDelay> delays = getCreatorDelays().createProtocolDelays();
+		creatorDelay = getCreatorDelays();
+		protocolDelayHeader = creatorDelay.getHeader();
+		List<ProtocolDelay> delays = creatorDelay.createProtocolDelays();
+		
 		List<ProtocolDown> downs = getCreatorDowns().createProtocolDowns();
 		List<Protocol> ans = new ArrayList<Protocol>();
 		for (ProtocolDelay delay : delays) {
@@ -445,9 +451,16 @@ public class MainSimulator {
 		if (delayType == 2) {
 			ans = new CreatorDelaysUniform();
 		}
+		
+		if (delayType == 3) {
+			ans = new CreatorDelaysExponential();
+		}
+		
+		if (delayType == 4) {
+			ans = new CreatorDelaysPossion();
+		}
 
-		protocolDelayHeader = ans.getHeader();
-
+		
 		return ans;
 	}
 

@@ -93,13 +93,14 @@ public class MailerThread extends Mailer implements Runnable {
 			System.out.println("mailer handleDelay");
 			System.out.println("msgToSend:"+msgToSend);
 		}
-		
+		/*
 		if (msgToSend.isEmpty()) {
 			this.time = this.terminationTime-1;
 			createData(this.time);
 			this.time = this.terminationTime;
 
 		}
+		*/
 		
 		agentsRecieveMsgs(msgToSend);
 		if (MainSimulator.isThreadDebug) {

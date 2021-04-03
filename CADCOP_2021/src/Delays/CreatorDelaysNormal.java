@@ -40,5 +40,8 @@ public class CreatorDelaysNormal extends CreatorDelays{
 		
 	}
 
-	
+	@Override
+	public String name() {
+		return "Normal";
+	}
 }

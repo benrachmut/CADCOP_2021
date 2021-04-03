@@ -22,5 +22,8 @@ public class CreatorDelaysNone extends CreatorDelays {
 		return new ProtocolDelayNone(gamma);
 
 	}
-
+	@Override
+	public String name() {
+		return "None";
+	}
 }
