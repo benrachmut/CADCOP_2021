@@ -27,26 +27,15 @@ public class ProtocolDelayNormal extends ProtocolDelay {
 	}
 
 	@Override
-	protected  Double createDelayGivenParameters(boolean isAlgoMsg) {
-		Random whichRand;
-		if (isAlgoMsg) {
-			whichRand = rndUNormalAlgo;
-		}else {
-			whichRand =rndUNormalAnytime;
-		}
-		double ans =  whichRand.nextGaussian() * sigma + mu;
+	protected  Double createDelay(Random r) {
+		
+		double ans = r.nextGaussian() * Math.sqrt(this.sigma) + this.mu;
 		if (ans<0) {
 			return 0.0;
 		}
 		else {
 			return ans;
 		}
-	}
-
-	@Override
-	protected void setSeedsGivenParameters(int dcopId) {
-		rndUNormalAlgo = new Random(dcopId);
-		rndUNormalAnytime = new Random(dcopId*213);
 	}
 
 	@Override

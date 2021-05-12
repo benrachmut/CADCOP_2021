@@ -10,14 +10,11 @@ public class ProtocolDelayNone extends ProtocolDelay{
 
 	
 
-	@Override
-	protected void setSeedsGivenParameters(int dcopId) {
-		rndGammaAlgorthmic=new Random(dcopId);
-	}
+
 
 	@Override
-	protected Double createDelayGivenParameters(boolean blah) {
-		// TODO Auto-generated method stub
+	protected Double createDelay(Random r) {
+		
 		return 0.0;
 	}
 

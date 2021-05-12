@@ -36,25 +36,26 @@ public class MailerThread extends Mailer implements Runnable {
 
 	@Override
 	public void run() {
+		/*
 		if (MainSimulator.isAMDLSDistributedDebug) {
 			for (Agent a : dcop.getAllAgents()) {
 				System.out.println((AMDLS_V1)a+" neighbors: "+((AMDLS_V1)a).getNeigborSetId());
 			}
 		}
-		
+		*/
 		
 		createData(this.time);
 	
 		List<Msg> msgsFromInbox = inbox.extract();
+		
 		if (MainSimulator.isThreadDebug) {
 			System.out.println("mailer msgs extract from inbox: " + msgsFromInbox);
 		}
+		
 		placeMsgsFromInboxInMessageBox(msgsFromInbox);
 		shouldUpdateClockBecuaseNoMsgsRecieved();
-
 		List<Msg> msgToSend = this.handleDelay();
 		agentsRecieveMsgs(msgToSend);
-
 		msgsFromInbox = new ArrayList<Msg>();
 		
 		while (this.time < this.terminationTime) {
@@ -79,6 +80,8 @@ public class MailerThread extends Mailer implements Runnable {
 
 		msgsFromInbox = inbox.extract();
 		placeMsgsFromInboxInMessageBox(msgsFromInbox);
+		
+		
 		if (MainSimulator.isThreadDebug) {
 			System.out.println("mailer wakes up");
 
@@ -93,8 +96,10 @@ public class MailerThread extends Mailer implements Runnable {
 			System.out.println("mailer handleDelay");
 			System.out.println("msgToSend:"+msgToSend);
 		}
+		
+		
 		/*
-		if (msgToSend.isEmpty()) {
+		if (msgToSend.isEmpty() && areAllIdle()) {
 			this.time = this.terminationTime-1;
 			createData(this.time);
 			this.time = this.terminationTime;
@@ -102,10 +107,12 @@ public class MailerThread extends Mailer implements Runnable {
 		}
 		*/
 		
+		
 		agentsRecieveMsgs(msgToSend);
 		if (MainSimulator.isThreadDebug) {
 			System.out.println("mailer agentsRecieveMsgs");
 		}
+		
 
 	}
 

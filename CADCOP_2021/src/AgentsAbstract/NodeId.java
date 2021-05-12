@@ -20,7 +20,7 @@ public class NodeId implements Comparable<NodeId> {
 	public NodeId(int id1, boolean isPlusOne) {
 
 		if (isPlusOne) {
-			this.id1 = id1; 
+			this.id1 = id1; //shouldnt be plus one?  
 		}else {
 		this.id1 = id1;
 		}

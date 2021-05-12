@@ -8,24 +8,16 @@ import Delays.ProtocolDelay;
 
 public abstract class CreatorDown {
 
-	protected boolean[] agentDownScenarios = { false };
-	protected double[] probPerMsgApproch = { 0 };
+	protected boolean[] imperfectCommunicationScenario= {false,true};
 
 	public  List<ProtocolDown> createProtocolDowns() {
 		List<ProtocolDown> ans = new ArrayList<ProtocolDown>();
-		for (boolean agentDownScenario : agentDownScenarios) {
-			if (agentDownScenario == false) {
+		for (boolean b : imperfectCommunicationScenario) {
+			if (b == false) {
 				ans.add(createDefultProtocol());
 			}
 			else {
-				for (double prob : probPerMsgApproch) {
-					
-					Collection<? extends ProtocolDown> toAdd = createCombinationsDown(prob);
-					if (toAdd!=null) {
-						ans.addAll(toAdd);
-					}	
-					
-				}
+				ans.addAll(createCombinationsDown());	
 			}
 		}
 		return ans;
@@ -38,7 +30,8 @@ public abstract class CreatorDown {
 
 	protected abstract String header();
 		
-	protected abstract Collection<? extends ProtocolDown> createCombinationsDown(double prob);
+	protected abstract Collection<? extends ProtocolDown> createCombinationsDown();
 
+	
 	protected abstract ProtocolDown createDefultProtocol();
 }

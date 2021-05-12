@@ -59,8 +59,10 @@ public abstract class Dcop {
 	// ------- ** for graph use **------
 	protected AgentVariable[] agentsVariables;
 	protected List<Neighbor> neighbors;
+	protected Neighbor [][] neighborsMatrix;
 	protected int D;
 	public List<Thread> agentsThreads;
+	protected double[][] agentsQuadraticDistance; 
 
 	// ------- ** for factor graph use **------
 	protected List<AgentFunction> agentFunctions;
@@ -78,9 +80,11 @@ public abstract class Dcop {
 		this.agentFunctions = new ArrayList<AgentFunction>();
 		this.dcopId = dcopId;
 		agentsVariables = new AgentVariable[A];
+		agentsQuadraticDistance =  new double[A][A];
 		this.agentsAll = new ArrayList<Agent>();
 		createVariableAgents();
 		neighbors = new ArrayList<Neighbor>();
+		neighborsMatrix = new Neighbor[A][A];
 
 	}
 
@@ -122,7 +126,38 @@ public abstract class Dcop {
 			agentsVariables[agentId] = createAgentInstance(agentId);
 			this.agentsAll.add(agentsVariables[agentId]);
 		}
+		
+		for (int i = 0; i < agentsQuadraticDistance.length; i++) {
+			for (int j = 0; j < agentsQuadraticDistance[i].length; j++) {
+				double x1 = agentsVariables[i].getXCoordinates();
+				double x2 = agentsVariables[j].getXCoordinates();
+				double y1 = agentsVariables[i].getYCoordinates();
+				double y2 = agentsVariables[j].getYCoordinates();
+				
+				agentsQuadraticDistance[i][j] = calculateQuadraticDistance(x1,x2,y1,y2);
+			}
+		}
+	}
+	
+	public double[][] getAgentsQuadraticDistance(){
+		double[][] ans = new double [agentsQuadraticDistance.length][agentsQuadraticDistance[0].length];
+		for (int i = 0; i < ans.length; i++) {
+			for (int j = 0; j < ans[i].length; j++) {
+				ans[i][j] = new Double(agentsQuadraticDistance[i][j]);
+			}
+		}
+		return ans;
+	}
 
+	private static Double calculateQuadraticDistance(double x1, double x2, double y1, double y2) {
+		double deltaX = x1-x2;
+		double deltaY = y1-y2;
+		
+		double aSquare = Math.pow(deltaX, 2);
+		double bSquare = Math.pow(deltaY, 2);
+		double cSquare = aSquare+bSquare;
+		
+		return Math.sqrt(cSquare);
 	}
 
 	private AgentVariable createAgentInstance(int agentId) {
@@ -343,6 +378,8 @@ public abstract class Dcop {
 		}
 		return this;
 	}
+
+	
 
 	private void createFactorGraphCombined() {
 

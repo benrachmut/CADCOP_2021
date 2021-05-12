@@ -1,9 +1,9 @@
 package Down;
 
 import java.util.Collection;
+import java.util.HashSet;
 
-import Delays.ProtocolDelay;
-import Delays.ProtocolDelayNone;
+
 
 public class CreatorDownNone  extends CreatorDown {
 
@@ -20,9 +20,9 @@ public class CreatorDownNone  extends CreatorDown {
 	}
 
 	@Override
-	protected Collection<? extends ProtocolDown> createCombinationsDown(double prob) {
+	protected Collection<? extends ProtocolDown> createCombinationsDown() {
 		// TODO Auto-generated method stub
-		return null;
+		return new HashSet<ProtocolDown>();
 	}
 
 

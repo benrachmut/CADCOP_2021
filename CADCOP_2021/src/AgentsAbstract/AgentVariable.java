@@ -34,7 +34,8 @@ public abstract class AgentVariable extends Agent {
 	protected TreeMap<NodeId, Integer[][]> neighborsConstraint; // id and matrix of constraints
 	protected int[] domainArray;
 
-
+	protected double x_coordinates;
+	protected double y_coordinates;
 
 	// ----------**Formations**----------
 	// -----*DFS*-----
@@ -45,6 +46,10 @@ public abstract class AgentVariable extends Agent {
 
 	public AgentVariable(int dcopId, int D, int id1) {
 		super(dcopId, D);
+		Random rLocation = new Random(15217 * (id1+1) + 1870 * dcopId);
+		this.x_coordinates = rLocation.nextDouble();
+		this.y_coordinates = rLocation.nextDouble();
+		
 		neighborsConstraint = new TreeMap<NodeId, Integer[][]>();
 		this.id = id1;
 		this.domainArray = new int[domainSize];
@@ -203,7 +208,13 @@ public abstract class AgentVariable extends Agent {
 		return 1;
 	}
 
-	
+	public double getXCoordinates() {
+		return this.x_coordinates;
+	}
+
+	public double getYCoordinates() {
+		return this.y_coordinates;
+	}
 
 	
 

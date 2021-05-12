@@ -5,8 +5,10 @@ public abstract class ProtocolDelay {
 	
 	protected boolean imperfectCommunicationScenario;
 	protected boolean isTimeStamp;
-	private double gamma;
+	protected double gamma;
 	protected Random rndGammaAlgorthmic, rndGammaAnytime;
+	protected Random rndDelayAlgorthmic, rndDelayAnytime;
+
 	
 
 	public ProtocolDelay(boolean imperfectCommunicationScenario, boolean isTimeStamp, double gamma) {
@@ -29,16 +31,27 @@ public abstract class ProtocolDelay {
 			return null;
 		}
 		else {
-			return createDelayGivenParameters(isAlgorithmicMsg);
+			
+			Random whichRandomDelay;
+			if (isAlgorithmicMsg) {
+				whichRandomDelay =  rndDelayAlgorthmic;
+			}else {
+				whichRandomDelay = rndDelayAnytime;
+			}
+			
+			
+			
+			return createDelay(whichRandomDelay);
 		}
 	}
-	protected abstract Double createDelayGivenParameters(boolean isAlgorithmicMsg);
-	protected abstract void setSeedsGivenParameters(int dcopId) ;
+	protected abstract Double createDelay(Random r);
 
 	public void setSeeds(int dcopId) {
 		this.rndGammaAlgorthmic = new Random(dcopId*145);
 		this.rndGammaAnytime = new Random(dcopId*321);
-		this.setSeedsGivenParameters(dcopId);
+		this.rndDelayAlgorthmic = new Random(dcopId*632);
+		this.rndDelayAnytime = new Random(dcopId*873);
+		
 	}
 
 	public boolean isWithTimeStamp() {

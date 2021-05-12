@@ -25,8 +25,8 @@ import Delays.CreatorDelaysPossion;
 import Delays.CreatorDelaysUniform;
 import Delays.ProtocolDelay;
 import Down.CreatorDown;
-import Down.CreatorDownConstant;
 import Down.CreatorDownNone;
+import Down.CreatorDownPoission;
 import Down.ProtocolDown;
 import Problem.Dcop;
 import Problem.DcopGraphColoring;
@@ -67,10 +67,10 @@ public class MainSimulator {
 	public static int div=1;
 
 	public static int start = 0;
-	public static int end = 101;
+	public static int end = 1;
 	public static int end_temp = start; //DO NOT CHANGE
-	public static long termination = 10000;//200000;
-	private static int everyHowManyExcel = 50;
+	public static long termination = 200000;
+	private static int everyHowManyExcel = 100;
 
 	// ------------------------------**PROBLEM MANGNITUDE**
 	public static int A = 50; // amount of agents
@@ -83,7 +83,7 @@ public class MainSimulator {
 	/*
 	 * 1 = Random uniform; 2 = Graph Coloring; 3 = Scale Free Network
 	 */
-	public static int dcopBenchMark = 3;
+	public static int dcopBenchMark = 1;
 	// 1 = Random uniform
 	public static double dcopUniformP1 =0.2;
 	public static double dcopUniformP2 = 1;// Probability for two values in domain between neighbors to have constraints
@@ -110,7 +110,7 @@ public class MainSimulator {
 	
 	//4,7,11
 	//1,3,8
-	public static int agentType = 8;
+	public static int agentType = 1;
 
 	public static boolean isMaxSumSyDebug = false;
 	public static boolean isThreadDebug = false;
@@ -130,13 +130,14 @@ public class MainSimulator {
 	/*
 	 * delayTypes: 0 = non, 1 = normal, 2 = uniform, 3 = Exponential, 4 = Possion
 	 */
-	public static int delayType = 4;
+	public static int delayType = 2;
 	public static CreatorDelays creatorDelay;
 
 	/*
 	 * delayTypes: 0 = non
 	 */
-	public static int downType = 1;
+	public static int downType = 0;
+	public static CreatorDown creatorDown;
 
 //	public static CreatorDelays creatorDelay;
 //	public static CreatorDowns creatorDown;
@@ -153,9 +154,6 @@ public class MainSimulator {
 	public static String fileName = "";
 
 	public static void main(String[] args) {
-		
-	
-		
 		if(isAtomicTime && isThreadMailer) {
 			termination = termination*multiplicationTime;
 		}
@@ -409,8 +407,12 @@ public class MainSimulator {
 		protocolDelayHeader = creatorDelay.getHeader();
 		List<ProtocolDelay> delays = creatorDelay.createProtocolDelays();
 		
-		List<ProtocolDown> downs = getCreatorDowns().createProtocolDowns();
+		creatorDown= getCreatorDowns();
+		protocolDownHeader = creatorDown.getHeader();
+		List<ProtocolDown> downs = creatorDown.createProtocolDowns();
+		
 		List<Protocol> ans = new ArrayList<Protocol>();
+		
 		for (ProtocolDelay delay : delays) {
 			for (ProtocolDown down : downs) {
 				Protocol p = new Protocol(delay, down);
@@ -431,9 +433,8 @@ public class MainSimulator {
 		}
 
 		if (downType == 1) {
-			ans = new CreatorDownConstant();
+			ans = new CreatorDownPoission();
 		}
-		protocolDownHeader = ans.getHeader();
 
 		return ans;
 	}
@@ -473,8 +474,10 @@ public class MainSimulator {
 				protocolCounter += 1;
 				Mailer mailer = getMailer(protocol, dcop);
 				dcop.dcopMeetsMailer(mailer);
-				//mailer.mailerMeetsDcop(dcop);
 				mailer.mailerMeetsDcop(dcop.getId());
+				
+				
+				
 				dcop.initilizeAndStartRunAgents();
 				infromAllAgentsUponTimeStamp(protocol, dcop.getAllAgents());
 				if (isThreadMailer) {

@@ -23,20 +23,15 @@ public class ProtocolDelayExponential extends ProtocolDelay {
 	}
 
 	@Override
-	protected Double createDelayGivenParameters(boolean isAlgoMsg) {
+	protected Double createDelay(Random r) {
 
 		if (this.lambda == 0) {
 			return 0.0;
 		}
 
-		Random whichRand;
-		if (isAlgoMsg) {
-			whichRand = rndLambdaAlgo;
-		} else {
-			whichRand = rndLambdaAnytime;
-		}
+	
 
-		double ans = getRandomExponential(whichRand);
+		double ans = getRandomExponential(r);
 		if (ans < 0) {
 			return 0.0;
 		} else {
@@ -48,11 +43,7 @@ public class ProtocolDelayExponential extends ProtocolDelay {
          return -(Math.log(r.nextDouble()) / lambda);
      }
 
-	@Override
-	protected void setSeedsGivenParameters(int dcopId) {
-		rndLambdaAlgo=new Random(dcopId*43242);
-		rndLambdaAnytime=new Random(dcopId*655);
-	}
+	
 
 	@Override
 	protected String getStringParamets() {
