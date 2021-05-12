@@ -11,14 +11,13 @@ public class ProtocolDelayDistanceConstant extends ProtocolDelayMatrix {
 		multiplier = 0;
 	}
 
-	public ProtocolDelayDistanceConstant(boolean isTimeStamp, double gamma, double multiplier, double[][] matrix) {
-		super(true, isTimeStamp, gamma,matrix);
+	public ProtocolDelayDistanceConstant(boolean isTimeStamp, double gamma, double multiplier) {
+		super(true, isTimeStamp, gamma);
 		this.multiplier = multiplier;
 	}
 
 	@Override
 	protected Double createDelay(Random r, int id1,int id2) {
-		
 		return this.matrix[id1][id2]*multiplier;
 	}
 

@@ -34,8 +34,9 @@ public abstract class AgentVariable extends Agent {
 	protected TreeMap<NodeId, Integer[][]> neighborsConstraint; // id and matrix of constraints
 	protected int[] domainArray;
 
-	protected double x_coordinates;
-	protected double y_coordinates;
+	protected Location location;
+	//x_coordinates;
+	//protected double y_coordinates;
 
 	// ----------**Formations**----------
 	// -----*DFS*-----
@@ -46,9 +47,6 @@ public abstract class AgentVariable extends Agent {
 
 	public AgentVariable(int dcopId, int D, int id1) {
 		super(dcopId, D);
-		Random rLocation = new Random(15217 * (id1+1) + 1870 * dcopId);
-		this.x_coordinates = rLocation.nextDouble();
-		this.y_coordinates = rLocation.nextDouble();
 		
 		neighborsConstraint = new TreeMap<NodeId, Integer[][]>();
 		this.id = id1;
@@ -59,6 +57,11 @@ public abstract class AgentVariable extends Agent {
 		// resetAgent();
 		valueAssignmentChangeCounter = 0.0;
 		this.dfsSons = new HashSet<NodeId>();
+
+	}
+	
+	public void updateLocationGivenCity(Location cityLocation) {
+		this.location =  new LocationRandomNormal(this.dcopId,this.id,cityLocation);
 
 	}
 
@@ -207,13 +210,18 @@ public abstract class AgentVariable extends Agent {
 	public Integer getColorNumber() {
 		return 1;
 	}
-
-	public double getXCoordinates() {
+/*
+	public Location getLocation() {
 		return this.x_coordinates;
 	}
+*/
+	public double getQuadraticDistanceTo(Location otherLocation) {
+		return this.location.getQuadraticDistanceTo(otherLocation);
+	}
 
-	public double getYCoordinates() {
-		return this.y_coordinates;
+	public Location getLocation() {
+		// TODO Auto-generated method stub
+		return this.location;
 	}
 
 	

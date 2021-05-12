@@ -6,17 +6,11 @@ abstract public class ProtocolDelayMatrix extends ProtocolDelay {
 
 	protected double[][] matrix;
 
-	public ProtocolDelayMatrix(boolean imperfectCommunicationScenario, boolean isTimeStamp, double gamma,
-			double[][] matrix) {
-		super(imperfectCommunicationScenario, isTimeStamp, gamma);
-		this.matrix = matrix;
-	}
-
 	public ProtocolDelayMatrix(boolean imperfectCommunicationScenario, boolean isTimeStamp, double gamma) {
 		super(imperfectCommunicationScenario, isTimeStamp, gamma);
-		// TODO Auto-generated constructor stub
 	}
 
+	
 	@Override
 	protected Double createDelay(Random r) {
 		throw new RuntimeException("should use createDelay with "

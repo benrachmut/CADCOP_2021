@@ -16,6 +16,7 @@ import AgentsAbstract.Agent;
 import AgentsAbstract.AgentFunction;
 import AgentsAbstract.AgentVariable;
 import AgentsAbstract.AgentVariableInference;
+import AgentsAbstract.Location;
 import Data.Data;
 import Delays.CreatorDelays;
 import Delays.CreatorDelaysExponential;
@@ -35,6 +36,11 @@ import Problem.DcopUniform;
 
 public class MainSimulator {
 
+	//-------------Location
+	public static int numberOfCities = 3;
+	public static double sdDistanceFromCity = 0.05;
+	
+	
 	// ------------------------------**For Data
 	public static List<Mailer> mailerAll = new ArrayList<Mailer>();
 	public static Map<Protocol, List<Mailer>> mailersByProtocol = new HashMap<Protocol, List<Mailer>>();
@@ -126,6 +132,7 @@ public class MainSimulator {
 	public static boolean isMaxSumDebug = false;
 	public static boolean isMaxSumThreadDebug = false;
 	public static boolean is2OptDebug = false;
+	public static boolean isLocationDebug = true;
 
 	/*
 	 * delayTypes: 0 = non, 1 = normal, 2 = uniform, 3 = Exponential, 4 = Possion

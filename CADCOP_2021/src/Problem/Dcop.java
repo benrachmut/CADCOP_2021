@@ -6,9 +6,12 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Random;
 import java.util.Set;
 import java.util.SortedSet;
+import java.util.TreeMap;
 import java.util.TreeSet;
 
 import AgentsAbstract.Agent;
@@ -17,6 +20,8 @@ import AgentsAbstract.AgentVariable;
 
 import AgentsAbstract.AgentVariableInference;
 import AgentsAbstract.AgentVariableSearch;
+import AgentsAbstract.Location;
+import AgentsAbstract.LocationRandomUniform;
 import AgentsAbstract.NodeId;
 
 import AlgorithmInference.MaxSumSplitConstraintFactorGraphDelay;
@@ -56,13 +61,14 @@ import Messages.Msg;
 
 public abstract class Dcop {
 
+	private Map<Integer, Location> citesLocation;
 	// ------- ** for graph use **------
 	protected AgentVariable[] agentsVariables;
 	protected List<Neighbor> neighbors;
-	protected Neighbor [][] neighborsMatrix;
+	protected Neighbor[][] neighborsMatrix;
 	protected int D;
 	public List<Thread> agentsThreads;
-	protected double[][] agentsQuadraticDistance; 
+	protected double[][] agentsQuadraticDistance;
 
 	// ------- ** for factor graph use **------
 	protected List<AgentFunction> agentFunctions;
@@ -76,16 +82,27 @@ public abstract class Dcop {
 //	protected List<AgentFunction> functionNodes;
 
 	public Dcop(int dcopId, int A, int D) {
+
 		this.D = D;
 		this.agentFunctions = new ArrayList<AgentFunction>();
 		this.dcopId = dcopId;
+		this.citesLocation = createLocationToCities(dcopId);
 		agentsVariables = new AgentVariable[A];
-		agentsQuadraticDistance =  new double[A][A];
+		agentsQuadraticDistance = new double[A][A];
 		this.agentsAll = new ArrayList<Agent>();
+
 		createVariableAgents();
 		neighbors = new ArrayList<Neighbor>();
 		neighborsMatrix = new Neighbor[A][A];
 
+	}
+
+	private static  Map<Integer, Location> createLocationToCities(int dcopId) {
+		Map<Integer, Location> ans = new TreeMap<Integer, Location>();
+		for (int i = 0; i<MainSimulator.numberOfCities; i++) {
+			ans.put(i,new LocationRandomUniform(dcopId));
+		}
+		return ans;
 	}
 
 	protected void updateNames() {
@@ -124,40 +141,49 @@ public abstract class Dcop {
 	private void createVariableAgents() {
 		for (int agentId = 0; agentId < agentsVariables.length; agentId++) {
 			agentsVariables[agentId] = createAgentInstance(agentId);
-			this.agentsAll.add(agentsVariables[agentId]);
+			AgentVariable a = agentsVariables[agentId];
+			Location cityLocation = randomlySelectAgentCity(agentId);
+			a.updateLocationGivenCity(cityLocation);
+			this.agentsAll.add(a);
 		}
 		
-		for (int i = 0; i < agentsQuadraticDistance.length; i++) {
-			for (int j = 0; j < agentsQuadraticDistance[i].length; j++) {
-				double x1 = agentsVariables[i].getXCoordinates();
-				double x2 = agentsVariables[j].getXCoordinates();
-				double y1 = agentsVariables[i].getYCoordinates();
-				double y2 = agentsVariables[j].getYCoordinates();
-				
-				agentsQuadraticDistance[i][j] = calculateQuadraticDistance(x1,x2,y1,y2);
+		if(MainSimulator.isLocationDebug) {
+			printCityLoctions();
+			printAgentsLocation();
+		}
+
+		for (int i = 0; i < agentsVariables.length; i++) {
+			for (int j = 0; j < agentsVariables.length; j++) {
+				agentsQuadraticDistance[i][j] = agentsVariables[i].getQuadraticDistanceTo(agentsVariables[i].getLocation());
 			}
 		}
 	}
-	
-	public double[][] getAgentsQuadraticDistance(){
-		double[][] ans = new double [agentsQuadraticDistance.length][agentsQuadraticDistance[0].length];
+
+	private void printCityLoctions() {
+		System.out.println("------Cities Location");
+		for (Entry<Integer, Location> e : this.citesLocation.entrySet()) {
+			
+		}
+		
+	}
+
+	private Location randomlySelectAgentCity(int agentId) {
+		
+		List<Integer> keysAsArray = new ArrayList<Integer>(this.citesLocation.keySet());
+		Random r = new Random (agentId*178+this.dcopId*817);
+		r.nextInt();
+		Location cityLocation  = citesLocation.get(keysAsArray.get(r.nextInt(keysAsArray.size())));
+		return cityLocation;
+	}
+
+	public double[][] getAgentsQuadraticDistance() {
+		double[][] ans = new double[agentsQuadraticDistance.length][agentsQuadraticDistance[0].length];
 		for (int i = 0; i < ans.length; i++) {
 			for (int j = 0; j < ans[i].length; j++) {
 				ans[i][j] = new Double(agentsQuadraticDistance[i][j]);
 			}
 		}
 		return ans;
-	}
-
-	private static Double calculateQuadraticDistance(double x1, double x2, double y1, double y2) {
-		double deltaX = x1-x2;
-		double deltaY = y1-y2;
-		
-		double aSquare = Math.pow(deltaX, 2);
-		double bSquare = Math.pow(deltaY, 2);
-		double cSquare = aSquare+bSquare;
-		
-		return Math.sqrt(cSquare);
 	}
 
 	private AgentVariable createAgentInstance(int agentId) {
@@ -378,8 +404,6 @@ public abstract class Dcop {
 		}
 		return this;
 	}
-
-	
 
 	private void createFactorGraphCombined() {
 
