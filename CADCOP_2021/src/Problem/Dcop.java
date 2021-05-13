@@ -61,7 +61,6 @@ import Messages.Msg;
 
 public abstract class Dcop {
 
-	private Map<Integer, Location> citesLocation;
 	// ------- ** for graph use **------
 	protected AgentVariable[] agentsVariables;
 	protected List<Neighbor> neighbors;
@@ -86,7 +85,6 @@ public abstract class Dcop {
 		this.D = D;
 		this.agentFunctions = new ArrayList<AgentFunction>();
 		this.dcopId = dcopId;
-		this.citesLocation = createLocationToCities(dcopId);
 		agentsVariables = new AgentVariable[A];
 		agentsQuadraticDistance = new double[A][A];
 		this.agentsAll = new ArrayList<Agent>();
@@ -94,16 +92,14 @@ public abstract class Dcop {
 		createVariableAgents();
 		neighbors = new ArrayList<Neighbor>();
 		neighborsMatrix = new Neighbor[A][A];
-
+		/*
+		 * if(MainSimulator.isLocationDebug) { Location cityLocation =
+		 * randomlySelectAgentCity(agentId); a.updateLocationGivenCity(cityLocation);
+		 * printCityLoctions(); printAgentsLocation(); }
+		 */
 	}
 
-	private static  Map<Integer, Location> createLocationToCities(int dcopId) {
-		Map<Integer, Location> ans = new TreeMap<Integer, Location>();
-		for (int i = 0; i<MainSimulator.numberOfCities; i++) {
-			ans.put(i,new LocationRandomUniform(dcopId));
-		}
-		return ans;
-	}
+	
 
 	protected void updateNames() {
 		setDcopName();
@@ -142,40 +138,21 @@ public abstract class Dcop {
 		for (int agentId = 0; agentId < agentsVariables.length; agentId++) {
 			agentsVariables[agentId] = createAgentInstance(agentId);
 			AgentVariable a = agentsVariables[agentId];
-			Location cityLocation = randomlySelectAgentCity(agentId);
-			a.updateLocationGivenCity(cityLocation);
+
 			this.agentsAll.add(a);
 		}
-		
-		if(MainSimulator.isLocationDebug) {
-			printCityLoctions();
-			printAgentsLocation();
-		}
 
-		for (int i = 0; i < agentsVariables.length; i++) {
-			for (int j = 0; j < agentsVariables.length; j++) {
-				agentsQuadraticDistance[i][j] = agentsVariables[i].getQuadraticDistanceTo(agentsVariables[i].getLocation());
-			}
-		}
 	}
-
-	private void printCityLoctions() {
-		System.out.println("------Cities Location");
-		for (Entry<Integer, Location> e : this.citesLocation.entrySet()) {
-			
-		}
-		
-	}
-
+/*
 	private Location randomlySelectAgentCity(int agentId) {
-		
-		List<Integer> keysAsArray = new ArrayList<Integer>(this.citesLocation.keySet());
-		Random r = new Random (agentId*178+this.dcopId*817);
+
+		List<Integer> keysAsArray = new ArrayList<Integer>(this.citiesLocation.keySet());
+		Random r = new Random((agentId+1) * 178 + (this.dcopId+1) * 817);
 		r.nextInt();
-		Location cityLocation  = citesLocation.get(keysAsArray.get(r.nextInt(keysAsArray.size())));
+		Location cityLocation = citesLocation.get(keysAsArray.get(r.nextInt(keysAsArray.size())));
 		return cityLocation;
 	}
-
+*/
 	public double[][] getAgentsQuadraticDistance() {
 		double[][] ans = new double[agentsQuadraticDistance.length][agentsQuadraticDistance[0].length];
 		for (int i = 0; i < ans.length; i++) {
@@ -397,12 +374,28 @@ public abstract class Dcop {
 
 	public Dcop initiate() {
 		createNeighbors();
+		calculateQuadarticDistance();
+
 		createFormations();
 
 		if (isInferenceAgent()) {
 			createFactorGraphCombined();
 		}
 		return this;
+	}
+
+	private void calculateQuadarticDistance() {
+		try {
+			for (int i = 0; i < agentsVariables.length; i++) {
+				for (int j = 0; j < agentsVariables.length; j++) {
+					agentsQuadraticDistance[i][j] = agentsVariables[i]
+							.getQuadraticDistanceTo(agentsVariables[i].getLocation());
+				}
+			}
+		} catch (NullPointerException e) {
+			System.err.println("There is not location to the agents");
+		}
+
 	}
 
 	private void createFactorGraphCombined() {

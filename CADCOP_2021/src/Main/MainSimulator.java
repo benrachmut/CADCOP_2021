@@ -30,15 +30,14 @@ import Down.CreatorDownNone;
 import Down.CreatorDownPoission;
 import Down.ProtocolDown;
 import Problem.Dcop;
+import Problem.DcopCities;
 import Problem.DcopGraphColoring;
 import Problem.DcopScaleFreeNetwork;
 import Problem.DcopUniform;
 
 public class MainSimulator {
 
-	//-------------Location
-	public static int numberOfCities = 3;
-	public static double sdDistanceFromCity = 0.05;
+	
 	
 	
 	// ------------------------------**For Data
@@ -89,7 +88,7 @@ public class MainSimulator {
 	/*
 	 * 1 = Random uniform; 2 = Graph Coloring; 3 = Scale Free Network
 	 */
-	public static int dcopBenchMark = 1;
+	public static int dcopBenchMark = 4;
 	// 1 = Random uniform
 	public static double dcopUniformP1 =0.2;
 	public static double dcopUniformP2 = 1;// Probability for two values in domain between neighbors to have constraints
@@ -105,6 +104,12 @@ public class MainSimulator {
 	public static double dcopScaleP2 = 1;// Probability for two values in domain between neighbors to have constraints
 	public static int costLbScale = 1;
 	public static int costUbScale = 100;
+	
+	// = cities
+	public static int numberOfCities = 10;
+	public static double sdSquareFromCity = 0.05;
+	
+	public static int costMultiplier = 100;
 	// ------------------------------**Algorithm Selection**
 	/*
 	 * 1 = DSA-ASY; 2 = DSA-SY; 3 = MGM-ASY ; 4 = MGM-SY ; 5 = AMDLS_V1 ; 6 =
@@ -132,7 +137,7 @@ public class MainSimulator {
 	public static boolean isMaxSumDebug = false;
 	public static boolean isMaxSumThreadDebug = false;
 	public static boolean is2OptDebug = false;
-	public static boolean isLocationDebug = true;
+	public static boolean isDcopCityDebug = true;
 
 	/*
 	 * delayTypes: 0 = non, 1 = normal, 2 = uniform, 3 = Exponential, 4 = Possion
@@ -403,6 +408,10 @@ public class MainSimulator {
 		if (dcopBenchMark == 3) {
 			ans = new DcopScaleFreeNetwork(dcopId, A, D, costLbScale, costUbScale, dcopScaleHubs, dcopScaleNeighbors,
 					dcopScaleP2);
+		}
+		
+		if (dcopBenchMark == 4) {
+			ans = new DcopCities(dcopId, A, D, costMultiplier,numberOfCities, sdSquareFromCity);
 		}
 
 		return ans;

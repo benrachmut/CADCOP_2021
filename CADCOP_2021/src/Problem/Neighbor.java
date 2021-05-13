@@ -25,15 +25,15 @@ public class Neighbor {
 		super();
 		updateVariables(a1, a2, costLb, costUb, D);
 		this.p2 = p2;
-		this.randomP2 = new Random(dcopId * 10 + a1.getId() * 100 + a2.getId() * 1000);
-		this.randomCost = new Random(dcopId * 100 + a1.getId() * 300 + a2.getId() * 1200);
+		this.randomP2 = new Random((dcopId+1) * 10 + (a1.getId()+1) * 100 + (a2.getId()+1) * 1000);
+		this.randomCost = new Random((dcopId+1) * 100 + (a1.getId()+1) * 300 + (a2.getId()+1) * 1200);
 		createConstraintsWithP2();
 		neighborsMeetings();
 	}
 
 	public Neighbor(AgentVariable a1, AgentVariable a2, int D, int costLb, int costUb, int dcopId) {
 		updateVariables(a1, a2, costLb, costUb, D);
-		this.randomCost = new Random(dcopId * 100 + a1.getId() * 300 + a2.getId() * 1200);
+		this.randomCost = new Random((1+dcopId) * 100 + (1+a1.getId()) * 300 + (1+a2.getId()) * 1200);
 		createConstraintsForEquality();
 		neighborsMeetings();
 	}

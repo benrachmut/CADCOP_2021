@@ -6,19 +6,13 @@ import Main.MainSimulator;
 
 public class LocationRandomNormal extends Location {
 	
-	private int agentId;
-	private double sd;
+	private double sdSquare;
 	private Location cityLocation; 
 
-	public LocationRandomNormal(int dcop_id, int agentId,Location cityLocation) {
-		this(dcop_id,agentId,cityLocation, MainSimulator.sdDistanceFromCity);
 	
-		
-	}
 	public LocationRandomNormal(int dcop_id, int agentId,Location cityLocation,double sd) {
-		super(dcop_id);
-		this.agentId = agentId;
-		this.sd = MainSimulator.sdDistanceFromCity;
+		super(dcop_id,agentId);
+		this.sdSquare = sd;
 		this.cityLocation = cityLocation;
 		generateRandomXY();
 		
@@ -26,12 +20,11 @@ public class LocationRandomNormal extends Location {
 
 	@Override
 	protected void generateRandomXY() {
-		Random r = new Random(117*dcopId+217*agentId);
 		double xMu = cityLocation.x;
 		double yMu = cityLocation.y;
 		r.nextGaussian();
-		this.x = r.nextGaussian() * Math.sqrt(this.sd) + xMu;
-		this.y = r.nextGaussian() * Math.sqrt(this.sd) + yMu;
+		this.x = r.nextGaussian() * this.sdSquare + xMu;
+		this.y = r.nextGaussian() * this.sdSquare + yMu;
 	}
 	
 

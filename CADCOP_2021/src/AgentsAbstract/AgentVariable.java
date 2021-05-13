@@ -52,7 +52,7 @@ public abstract class AgentVariable extends Agent {
 		this.id = id1;
 		this.domainArray = new int[domainSize];
 		createDomainArray();
-		Random r = new Random(132 * id1 + 100 * dcopId);
+		Random r = new Random((132 * (id1+1)) + 100 * (dcopId+1));
 		firstRandomVariable = r.nextInt(D);
 		// resetAgent();
 		valueAssignmentChangeCounter = 0.0;
@@ -60,10 +60,7 @@ public abstract class AgentVariable extends Agent {
 
 	}
 	
-	public void updateLocationGivenCity(Location cityLocation) {
-		this.location =  new LocationRandomNormal(this.dcopId,this.id,cityLocation);
-
-	}
+	
 
 	@Override
 	public String toString() {
@@ -218,10 +215,25 @@ public abstract class AgentVariable extends Agent {
 	public double getQuadraticDistanceTo(Location otherLocation) {
 		return this.location.getQuadraticDistanceTo(otherLocation);
 	}
-
 	public Location getLocation() {
 		// TODO Auto-generated method stub
 		return this.location;
+	}
+	@Override
+	public int hashCode() {
+		return this.id;
+	}
+
+	public void setLocation(Location myLocation) {
+		this.location = myLocation; 
+		
+	}
+
+
+
+	public void setLocationCloseToCity(Location mayerLocation, int dcopId, double sdSquareFromCity) {
+		this.location = new LocationRandomNormal(dcopId, this.id, mayerLocation, sdSquareFromCity);
+		
 	}
 
 	
