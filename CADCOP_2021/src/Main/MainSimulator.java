@@ -72,7 +72,7 @@ public class MainSimulator {
 	public static int div=1;
 
 	public static int start = 0;
-	public static int end = 1;
+	public static int end = 100;
 	public static int end_temp = start; //DO NOT CHANGE
 	public static long termination = 200000;
 	private static int everyHowManyExcel = 100;
@@ -88,7 +88,7 @@ public class MainSimulator {
 	/*
 	 * 1 = Random uniform; 2 = Graph Coloring; 3 = Scale Free Network
 	 */
-	public static int dcopBenchMark = 4;
+	public static int dcopBenchMark = 3;
 	// 1 = Random uniform
 	public static double dcopUniformP1 =0.2;
 	public static double dcopUniformP2 = 1;// Probability for two values in domain between neighbors to have constraints
@@ -109,7 +109,10 @@ public class MainSimulator {
 	public static int numberOfCities = 10;
 	public static double sdSquareFromCity = 0.05;
 	
-	public static int costMultiplier = 100;
+	public static int minCostCity=100;
+	public static int maxCostCity=200;
+	public static double dcopCityP2 = 1;// Probability for two values in domain between neighbors to have constraints
+
 	// ------------------------------**Algorithm Selection**
 	/*
 	 * 1 = DSA-ASY; 2 = DSA-SY; 3 = MGM-ASY ; 4 = MGM-SY ; 5 = AMDLS_V1 ; 6 =
@@ -411,7 +414,7 @@ public class MainSimulator {
 		}
 		
 		if (dcopBenchMark == 4) {
-			ans = new DcopCities(dcopId, A, D, costMultiplier,numberOfCities, sdSquareFromCity);
+			ans = new DcopCities(dcopId, A, D, numberOfCities, sdSquareFromCity,minCostCity,maxCostCity);
 		}
 
 		return ans;

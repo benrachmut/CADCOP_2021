@@ -1,6 +1,7 @@
 package Problem;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -71,16 +72,91 @@ public class DcopScaleFreeNetwork extends Dcop {
 
 	private void findNeighborsToOtherAgentsWhoAreNotHubs(Map<Integer, Boolean> marked) {
 		for (Entry<Integer, Boolean> e : marked.entrySet()) {
-			Integer id = e.getKey();
+			AgentVariable a1 = getAgentField(e.getKey());
 			Boolean isMarked = e.getValue();
 			if (!isMarked) {
-				AgentVariable af = getAgentField(id);
-				findNeighborsToSingleAgentNotHub(af);
-				marked.put(af.getId(), true);
+
+				//------------
+				int counter = 0;
+				while (counter < this.neighborsPerAgent) {
+					
+					List<AgentVariable> allMarked = getMarked(marked);
+					Map<AgentVariable,Double>probs1 = getProbs(allMarked);
+					Map<AgentVariable,Double>probs = sortByValue(probs1);
+					
+					
+					double d= randomNotHub.nextDouble();
+					for (Entry<AgentVariable, Double> e1 : probs.entrySet()) {
+						
+						if (d<e1.getValue()) {
+							if (!e1.getKey().getNeigborSetId().contains(a1.getNodeId())) {
+								 this.neighbors.add(new Neighbor(a1, e1.getKey(), D, costLb,costUb, this.dcopId,p2));
+								counter = counter+1;
+							}
+						break;
+						}
+						
+					}
+				}
+				
+
+				
+				//--
+				//AgentVariable af = getAgentField(id);
+				//findNeighborsToSingleAgentNotHub(af);
+				marked.put(a1.getId(), true);
 			}
 		}
 		checkIfMarkedMakeSense(marked);
 	}
+
+	
+	public static <K, V extends Comparable<? super V>> Map<K, V> sortByValue(Map<K, V> map) {
+        List<Entry<K, V>> list = new ArrayList<>(map.entrySet());
+        list.sort(Entry.comparingByValue());
+
+        Map<K, V> result = new LinkedHashMap<>();
+        for (Entry<K, V> entry : list) {
+            result.put(entry.getKey(), entry.getValue());
+        }
+
+        return result;
+    }
+	private Map<AgentVariable, Double> getProbs(List<AgentVariable> allMarked) {
+		Map<AgentVariable, Double>ans = new HashMap<AgentVariable, Double>();
+		double sumOfAllNeighbors = getSomeOfAllNeighborsOfMarked(allMarked);
+		double sum = 0;
+		for (AgentVariable a : allMarked) {
+			sum+=a.neighborSize();
+			ans.put(a, sum/sumOfAllNeighbors);
+		}
+		return ans;
+	}
+
+
+	private double getSomeOfAllNeighborsOfMarked(List<AgentVariable> allMarked) {
+		double sum = 0;
+		for (AgentVariable a : allMarked) {
+			sum+=a.neighborSize();
+		}
+		return sum;
+	}
+
+
+	private List<AgentVariable> getMarked(Map<Integer, Boolean> marked) {
+		List<AgentVariable> ans = new ArrayList<AgentVariable>();
+		for (Entry<Integer, Boolean> e : marked.entrySet()) {
+			if (e.getValue()) {
+				AgentVariable af = getAgentField(e.getKey());
+				ans.add(af);
+
+			}
+
+			
+		}
+		return ans;
+	}
+
 
 	private void checkIfMarkedMakeSense(Map<Integer, Boolean> marked) {
 		for (Boolean b : marked.values()) {
@@ -149,14 +225,23 @@ public class DcopScaleFreeNetwork extends Dcop {
 	}
 	
 	private int getFromProbsShuffledNeighbor(AgentVariable af, Map<Integer, Double> probs) {
+		
+		
 		double rnd = randomNotHub.nextDouble();
+		while (true) {
+			int index = randomNotHub.nextInt(agentsVariables.length);
+			if (rnd < probs.get(index)) {
+				return index;
+			}
+		}
+			/*
 		for (int i = 0; i < agentsVariables.length; i++) {
 			if (rnd < probs.get(i)) {
 				return i;
 			}
 		}
-
-		return -1;
+*/
+		//return -1;
 	}
 
 	private Map<Integer, Double> initProbs(AgentVariable af) {

@@ -67,7 +67,6 @@ public abstract class Dcop {
 	protected Neighbor[][] neighborsMatrix;
 	protected int D;
 	public List<Thread> agentsThreads;
-	protected double[][] agentsQuadraticDistance;
 
 	// ------- ** for factor graph use **------
 	protected List<AgentFunction> agentFunctions;
@@ -86,7 +85,6 @@ public abstract class Dcop {
 		this.agentFunctions = new ArrayList<AgentFunction>();
 		this.dcopId = dcopId;
 		agentsVariables = new AgentVariable[A];
-		agentsQuadraticDistance = new double[A][A];
 		this.agentsAll = new ArrayList<Agent>();
 
 		createVariableAgents();
@@ -153,6 +151,7 @@ public abstract class Dcop {
 		return cityLocation;
 	}
 */
+	/*
 	public double[][] getAgentsQuadraticDistance() {
 		double[][] ans = new double[agentsQuadraticDistance.length][agentsQuadraticDistance[0].length];
 		for (int i = 0; i < ans.length; i++) {
@@ -162,7 +161,7 @@ public abstract class Dcop {
 		}
 		return ans;
 	}
-
+*/
 	private AgentVariable createAgentInstance(int agentId) {
 		AgentVariable ans = null;
 		int agentType = MainSimulator.agentType;
@@ -374,8 +373,7 @@ public abstract class Dcop {
 
 	public Dcop initiate() {
 		createNeighbors();
-		calculateQuadarticDistance();
-
+		//calculateQuadarticDistance();
 		createFormations();
 
 		if (isInferenceAgent()) {
@@ -384,19 +382,7 @@ public abstract class Dcop {
 		return this;
 	}
 
-	private void calculateQuadarticDistance() {
-		try {
-			for (int i = 0; i < agentsVariables.length; i++) {
-				for (int j = 0; j < agentsVariables.length; j++) {
-					agentsQuadraticDistance[i][j] = agentsVariables[i]
-							.getQuadraticDistanceTo(agentsVariables[i].getLocation());
-				}
-			}
-		} catch (NullPointerException e) {
-			System.err.println("There is not location to the agents");
-		}
-
-	}
+	
 
 	private void createFactorGraphCombined() {
 

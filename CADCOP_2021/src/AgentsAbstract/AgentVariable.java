@@ -235,6 +235,11 @@ public abstract class AgentVariable extends Agent {
 		this.location = new LocationRandomNormal(dcopId, this.id, mayerLocation, sdSquareFromCity);
 		
 	}
+	@Override
+	public boolean equals(Object obj) {
+		// TODO Auto-generated method stub
+		return ((AgentVariable)obj).getId()==this.id;
+	}
 
 	
 
