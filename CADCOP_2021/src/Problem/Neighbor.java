@@ -137,5 +137,10 @@ public class Neighbor {
 		return this.constraints[i][j];
 	}
 
+	public double distanceBetween() {
+		
+		return a1.getQuadraticDistanceTo(a2.getLocation());
+	}
+
 	
 }

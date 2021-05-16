@@ -88,7 +88,7 @@ public class MainSimulator {
 	/*
 	 * 1 = Random uniform; 2 = Graph Coloring; 3 = Scale Free Network
 	 */
-	public static int dcopBenchMark = 3;
+	public static int dcopBenchMark = 4;
 	// 1 = Random uniform
 	public static double dcopUniformP1 =0.2;
 	public static double dcopUniformP2 = 1;// Probability for two values in domain between neighbors to have constraints
@@ -112,7 +112,8 @@ public class MainSimulator {
 	public static int minCostCity=100;
 	public static int maxCostCity=200;
 	public static double dcopCityP2 = 1;// Probability for two values in domain between neighbors to have constraints
-
+	public static int neighborsOfNonMayers = 3;
+	public static double exponentForNeighborCitizens = 7;
 	// ------------------------------**Algorithm Selection**
 	/*
 	 * 1 = DSA-ASY; 2 = DSA-SY; 3 = MGM-ASY ; 4 = MGM-SY ; 5 = AMDLS_V1 ; 6 =
@@ -414,7 +415,7 @@ public class MainSimulator {
 		}
 		
 		if (dcopBenchMark == 4) {
-			ans = new DcopCities(dcopId, A, D, numberOfCities, sdSquareFromCity,minCostCity,maxCostCity);
+			ans = new DcopCities(dcopId, A, D, numberOfCities, sdSquareFromCity,minCostCity,maxCostCity, dcopCityP2, neighborsOfNonMayers, exponentForNeighborCitizens);
 		}
 
 		return ans;

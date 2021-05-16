@@ -35,6 +35,11 @@ abstract public class Location {
 		
 		return Math.sqrt(cSquare);
 	}
+
+	public double getX() {
+		// TODO Auto-generated method stub
+		return this.x;
+	}
 	
 	
 	
