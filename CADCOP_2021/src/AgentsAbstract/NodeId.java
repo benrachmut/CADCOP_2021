@@ -13,11 +13,12 @@ public class NodeId implements Comparable<NodeId> {
 	private NodeType type;
 	private int id1;
 	private int id2;
-	
+	private boolean isPlusOne;
 	//-----------------------------------------------------------------------------------------------------------//
 
 	//OmerP - Constructor for Variable Node.
 	public NodeId(int id1, boolean isPlusOne) {
+		this.isPlusOne = isPlusOne;
 
 		if (isPlusOne) {
 			this.id1 = id1; //shouldnt be plus one?  
@@ -30,8 +31,8 @@ public class NodeId implements Comparable<NodeId> {
 	}
 	
 	//OmerP - Constructor for Function Node.
-	public NodeId(int id1, int id2) {
-		
+	public NodeId(int id1, int id2, boolean isPlusOne) {
+		this.isPlusOne = isPlusOne;
 		this.id1 = id1+1; 
 		this.id2 = id2+1;
 		setType(NodeType.Function);
@@ -151,6 +152,11 @@ public class NodeId implements Comparable<NodeId> {
 	public String toString() {
 		// TODO Auto-generated method stub
 		return "A_"+this.id1;
+	}
+
+	public boolean isPlusOne() {
+		// TODO Auto-generated method stub
+		return this.isPlusOne;
 	}
 	
 	

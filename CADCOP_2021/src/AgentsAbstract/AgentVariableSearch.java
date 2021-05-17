@@ -64,7 +64,7 @@ public abstract class AgentVariableSearch extends AgentVariable {
 		super(dcopId, D, id1);
 
 		this.time = 1;
-		this.nodeId = new NodeId(id1, true);
+		this.nodeId = new NodeId(id1,false);
 
 		this.neighborsValueAssignmnet = new TreeMap<NodeId, MsgReceive<Integer>>();
 		anytimeUpToSend = new ArrayList<Context>();
@@ -98,7 +98,7 @@ public abstract class AgentVariableSearch extends AgentVariable {
 	@Override
 	public void meetNeighbor(int neighborId, Integer[][] constraint) {
 		super.meetNeighbor(neighborId, constraint);
-		this.neighborsValueAssignmnet.put(new NodeId(neighborId, false), null);
+		this.neighborsValueAssignmnet.put(new NodeId(neighborId,false), null);
 	}
 
 	@Override

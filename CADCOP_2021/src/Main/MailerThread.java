@@ -9,8 +9,11 @@ import java.util.Iterator;
 import java.util.List;
 
 import AgentsAbstract.Agent;
+import AgentsAbstract.AgentFunction;
+import AgentsAbstract.AgentVariable;
 import AgentsAbstract.NodeId;
 import AlgorithmSearch.AMDLS_V1;
+import Delays.ProtocolDelayMatrix;
 import Delays.ProtocolDelayUniform;
 import Messages.Msg;
 import Messages.MsgAlgorithm;
@@ -53,7 +56,9 @@ public class MailerThread extends Mailer implements Runnable {
 		}
 		
 		placeMsgsFromInboxInMessageBox(msgsFromInbox);
+		
 		shouldUpdateClockBecuaseNoMsgsRecieved();
+		
 		List<Msg> msgToSend = this.handleDelay();
 		agentsRecieveMsgs(msgToSend);
 		msgsFromInbox = new ArrayList<Msg>();
@@ -98,14 +103,7 @@ public class MailerThread extends Mailer implements Runnable {
 		}
 		
 		
-		/*
-		if (msgToSend.isEmpty() && areAllIdle()) {
-			this.time = this.terminationTime-1;
-			createData(this.time);
-			this.time = this.terminationTime;
-
-		}
-		*/
+	
 		
 		
 		agentsRecieveMsgs(msgToSend);
@@ -130,10 +128,20 @@ public class MailerThread extends Mailer implements Runnable {
 			boolean flag = false;
 			updateMailerClockUponMsgRecieved(m);
 			if (m.isWithDelay()) {
-				int d = createDelay(m instanceof MsgAlgorithm);
+				int d=-1;
+				if (this.protocol.getDelay() instanceof ProtocolDelayMatrix) {
+
+					int[] indexes = getSenderAndRecieverId1(m);
+					
+					d =	createDelay(m instanceof MsgAlgorithm,indexes[0],indexes[1]);
+				}else {
+				
+				 d = createDelay(m instanceof MsgAlgorithm);
+				}
 				if (d == -1) {
 					flag = true;
 				}
+				
 				m.setTimeOfMsg(d);
 			}
 			if (!flag) {
@@ -144,6 +152,34 @@ public class MailerThread extends Mailer implements Runnable {
 	}
 
 	
+	
+
+	private int[] getSenderAndRecieverId1(Msg m) {
+		NodeId senderNodeId = m.getSenderId();
+		int i = getProparIndex(senderNodeId);
+		NodeId recieverNodeId = m.getRecieverId();
+		int j = getProparIndex(recieverNodeId);
+
+		int[]ans = {i,j};
+		return ans;
+	}
+
+	private int getProparIndex(NodeId nodeId) {
+		if (nodeId.getId2()!=0) {
+			nodeId = getAgentVariableHoldingNodeId(nodeId);
+		}
+		if (nodeId.isPlusOne()) {
+			return nodeId.getId1()-1;
+		}
+		return nodeId.getId1();
+	}
+
+	private NodeId getAgentVariableHoldingNodeId(NodeId functionNodeId) {
+		AgentFunction af = dcop.getFunctionNodes(functionNodeId);
+		
+		return af.getAgentVariableInference().getNodeId();
+	}
+
 	private boolean mailerHasMsgsToSend() {
 		Msg minTimeMsg = Collections.min(messageBox, new MsgsAgentTimeComparator());
 		long minTime = minTimeMsg.getTimeOfMsg();

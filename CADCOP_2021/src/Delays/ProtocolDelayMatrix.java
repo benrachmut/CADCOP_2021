@@ -42,4 +42,16 @@ abstract public class ProtocolDelayMatrix extends ProtocolDelay {
 		}
 	}
 
+
+	public void setMatix(double[][] matrix) {
+		this.matrix = matrix;
+		
+	}
+
+
+	public double[][] getMatrix() {
+		return this.matrix;
+		
+	}
+
 }

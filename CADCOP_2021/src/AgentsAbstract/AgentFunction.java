@@ -229,7 +229,9 @@ public abstract class AgentFunction extends Agent {
 		}
 		return false;
 	}
-	
+	public AgentVariableInference getAgentVariableInference() {
+		return this.variableNode;
+	}
 	
 	
 }

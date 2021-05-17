@@ -28,12 +28,14 @@ import AlgorithmSearch.AMDLS_V2;
 import Comparators.CompAgentVariableByNeighborSize;
 import Data.Data;
 import Delays.ProtocolDelay;
+import Delays.ProtocolDelayMatrix;
 import Down.ProtocolDown;
 import Messages.Msg;
 import Messages.MsgAlgorithm;
 import Messages.MsgAlgorithmFactor;
 import Messages.MsgAnyTime;
 import Problem.Dcop;
+import Problem.DcopCities;
 
 public abstract class Mailer {
 	protected Protocol protocol;
@@ -63,7 +65,13 @@ public abstract class Mailer {
 		this.terminationTime = terminationTime;
 		this.dataMap = new TreeMap<Long, Data>();
 		this.outboxes = new HashMap <NodeId,UnboundedBuffer<Msg>> ();
-
+		if (protocol.getDelay() instanceof ProtocolDelayMatrix) {
+			double [][] matrix = null;
+			if (dcop instanceof DcopCities) {
+				matrix = ((DcopCities)dcop).getDistancesMatrix();	
+			}
+			((ProtocolDelayMatrix)protocol.getDelay()).setMatix(matrix);
+		}
 		setMailerName();
 
 	}
@@ -153,6 +161,20 @@ public abstract class Mailer {
 
 	protected int createDelay(boolean isAlgorithmicMsg) {
 		Double d = this.protocol.getDelay().createDelay(isAlgorithmicMsg);
+		if (d == null) {
+			return -1;
+		}
+		double dd = d;
+		int ans = (int) dd;
+		return ans;
+	}
+	
+	protected int createDelay(boolean isAlgorithmicMsg, int i, int j) {
+		Double d = ((ProtocolDelayMatrix)this.protocol.getDelay()).createDelay(isAlgorithmicMsg,i,j);
+		if (MainSimulator.isDcopCityDebug&&((i == 0 && j == 31) ||(i == 31 && j == 0))) {
+			System.out.println(d);
+		}
+		
 		if (d == null) {
 			return -1;
 		}

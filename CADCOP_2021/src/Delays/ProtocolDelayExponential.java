@@ -5,7 +5,6 @@ import java.util.Random;
 public class ProtocolDelayExponential extends ProtocolDelay {
 
 	private double lambda;
-	private Random rndLambdaAlgo, rndLambdaAnytime;
 
 	public ProtocolDelayExponential(boolean isTimeStamp, double gamma, double lambda) {
 		super(true, isTimeStamp, gamma);

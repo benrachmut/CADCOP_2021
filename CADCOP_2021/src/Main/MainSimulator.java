@@ -19,6 +19,7 @@ import AgentsAbstract.AgentVariableInference;
 import AgentsAbstract.Location;
 import Data.Data;
 import Delays.CreatorDelays;
+import Delays.CreatorDelaysDistancePoisson;
 import Delays.CreatorDelaysExponential;
 import Delays.CreatorDelaysNone;
 import Delays.CreatorDelaysNormal;
@@ -109,11 +110,11 @@ public class MainSimulator {
 	public static int numberOfCities = 10;
 	public static double sdSquareFromCity = 0.05;
 	
-	public static int minCostCity=100;
-	public static int maxCostCity=200;
+	public static int minCostCity=1;
+	public static int maxCostCity=100;
 	public static double dcopCityP2 = 1;// Probability for two values in domain between neighbors to have constraints
 	public static int neighborsOfNonMayers = 3;
-	public static double exponentForNeighborCitizens = 7;
+	public static double exponentForNeighborCitizens = 5;
 	// ------------------------------**Algorithm Selection**
 	/*
 	 * 1 = DSA-ASY; 2 = DSA-SY; 3 = MGM-ASY ; 4 = MGM-SY ; 5 = AMDLS_V1 ; 6 =
@@ -125,7 +126,7 @@ public class MainSimulator {
 	
 	//4,7,11
 	//1,3,8
-	public static int agentType = 1;
+	public static int agentType = 2;
 
 	public static boolean isMaxSumSyDebug = false;
 	public static boolean isThreadDebug = false;
@@ -141,12 +142,12 @@ public class MainSimulator {
 	public static boolean isMaxSumDebug = false;
 	public static boolean isMaxSumThreadDebug = false;
 	public static boolean is2OptDebug = false;
-	public static boolean isDcopCityDebug = true;
+	public static boolean isDcopCityDebug = false;
 
 	/*
-	 * delayTypes: 0 = non, 1 = normal, 2 = uniform, 3 = Exponential, 4 = Possion
+	 * delayTypes: 0 = non, 1 = normal, 2 = uniform, 3 = Exponential, 4 = distancePois , 5 = Possion, 
 	 */
-	public static int delayType = 2;
+	public static int delayType = 4;
 	public static CreatorDelays creatorDelay;
 
 	/*
@@ -170,6 +171,10 @@ public class MainSimulator {
 	public static String fileName = "";
 
 	public static void main(String[] args) {
+		if ((dcopBenchMark==4 || delayType==4)&&dcopBenchMark!=delayType) {
+			throw new RuntimeException("if dcopBenchMark is city then delay type must be pois distance");
+		}
+		
 		if(isAtomicTime && isThreadMailer) {
 			termination = termination*multiplicationTime;
 		}
@@ -478,6 +483,11 @@ public class MainSimulator {
 		}
 		
 		if (delayType == 4) {
+			ans = new CreatorDelaysDistancePoisson();
+		}
+
+		
+		if (delayType == 5) {
 			ans = new CreatorDelaysPossion();
 		}
 
@@ -591,10 +601,10 @@ public class MainSimulator {
 
 	private static void printProblemCreationDebug(Dcop[] dcops) {
 		printAmountOfNeighbors(dcops);
-		printConstraintMatrixs(dcops);
+		//printConstraintMatrixs(dcops);
 
 	}
-
+/*
 	private static void printConstraintMatrixs(Dcop[] dcops) {
 		for (Dcop dcop : dcops) {
 			System.out.println("-----Dcop number : " + dcop.getId() + " constraint matrix with agent zero ----");
@@ -609,7 +619,7 @@ public class MainSimulator {
 			}
 		}
 	}
-
+*/
 	private static void print2DArray(Integer[][] matrix) {
 		for (int i = 0; i < matrix.length; i++) {
 			for (int j = 0; j < matrix[i].length; j++) {

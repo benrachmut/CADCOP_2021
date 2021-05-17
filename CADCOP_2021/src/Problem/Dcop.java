@@ -62,6 +62,7 @@ import Messages.Msg;
 public abstract class Dcop {
 
 	// ------- ** for graph use **------
+	
 	protected AgentVariable[] agentsVariables;
 	protected List<Neighbor> neighbors;
 	protected Neighbor[][] neighborsMatrix;
@@ -90,6 +91,8 @@ public abstract class Dcop {
 		createVariableAgents();
 		neighbors = new ArrayList<Neighbor>();
 		neighborsMatrix = new Neighbor[A][A];
+		updateNames();
+
 		/*
 		 * if(MainSimulator.isLocationDebug) { Location cityLocation =
 		 * randomlySelectAgentCity(agentId); a.updateLocationGivenCity(cityLocation);
@@ -1092,6 +1095,17 @@ public abstract class Dcop {
 
 	public List<Agent> getAllAgents() {
 		return agentsAll;
+	}
+
+
+
+	public AgentFunction getFunctionNodes(NodeId functionNodeId) {
+		for (AgentFunction af : agentFunctions) {
+			if (af.getNodeId().equals(functionNodeId)) {
+				return af;
+			}
+		}
+		throw new RuntimeException("there is no such functionNodeId");
 	}
 
 }

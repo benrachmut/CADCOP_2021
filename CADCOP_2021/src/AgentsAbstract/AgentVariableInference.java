@@ -24,11 +24,11 @@ public abstract class AgentVariableInference extends AgentVariable {
 		this.functionMsgs = new TreeMap<NodeId, MsgReceive<double[]>>();
 		this.functionNodes = new TreeMap<NodeId, AgentFunction>();
 		flagOfInferenceForKey = false;
-		this.nodeId = new NodeId(id1,true);
+		this.nodeId = new NodeId(id1);
 
 	}
 	public void meetNeighbor(int neighborId, Integer[][] constraint) {
-		this.neighborsConstraint.put(new NodeId(neighborId,true), constraint);
+		this.neighborsConstraint.put(new NodeId(neighborId), constraint);
 	}
 	
 	public int getFunctionMsgsSize() {
@@ -37,8 +37,8 @@ public abstract class AgentVariableInference extends AgentVariable {
 
 	}
 	public Integer[][] getMatrixWithAgent(int i) {
-		if (this.neighborsConstraint.containsKey(new NodeId(i,true))) {
-			return this.neighborsConstraint.get(new NodeId(i,true));
+		if (this.neighborsConstraint.containsKey(new NodeId(i))) {
+			return this.neighborsConstraint.get(new NodeId(i));
 		}
 		return null;
 	}

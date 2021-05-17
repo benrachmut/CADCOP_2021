@@ -7,7 +7,7 @@ import java.util.Random;
 public class ProtocolDelaysPossion extends ProtocolDelay {
 
 	private int lambda;
-	private Random rndLambdaAlgo, rndLambdaAnytime;
+
 
 	public ProtocolDelaysPossion(boolean isTimeStamp, double gamma, int lambda) {
 		super(true, isTimeStamp, gamma);
@@ -33,7 +33,7 @@ public class ProtocolDelaysPossion extends ProtocolDelay {
 
 	
 		double ans ;
-		if (this.lambda>=600) {
+		if (this.lambda>=100) {
 			ans= getRandomBig(r);
 		}else {
 			ans= getRandom(r);

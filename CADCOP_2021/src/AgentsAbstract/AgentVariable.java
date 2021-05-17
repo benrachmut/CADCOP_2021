@@ -173,14 +173,14 @@ public abstract class AgentVariable extends Agent {
 		// TODO Auto-generated method stub
 		return this.computationCounter;
 	}
-
+/*
 	public Integer[][] getMatrixWithAgent(int i) {
-		if (this.neighborsConstraint.containsKey(new NodeId(i,false))) {
-			return this.neighborsConstraint.get(new NodeId(i,false));
+		if (this.neighborsConstraint.containsKey(new NodeId(i))) {
+			return this.neighborsConstraint.get(new NodeId(i));
 		}
 		return null;
 	}
-
+*/
 	public int getTimestamp() {
 		return this.timeStampCounter;
 	}
