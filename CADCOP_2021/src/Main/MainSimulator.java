@@ -73,9 +73,9 @@ public class MainSimulator {
 	public static int div=1;
 
 	public static int start = 0;
-	public static int end = 20;
+	public static int end = 100;
 	public static int end_temp = start; //DO NOT CHANGE
-	public static long termination = 50000;
+	public static long termination = 100000;
 	private static int everyHowManyExcel = 100;
 
 	// ------------------------------**PROBLEM MANGNITUDE**

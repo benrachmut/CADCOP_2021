@@ -308,18 +308,14 @@ public class MaxSumStandardVarible extends AgentVariableInference {
 
 	public void chooseValueLongAssignment() {
 
-		long[] table = new long[this.domainSize];
-		long bestValueAssignment = Long.MAX_VALUE; // Best value that is initialized to a big number.
+		double[] table = new double[this.domainSize];
+		double bestValueAssignment = Double.MAX_VALUE; // Best value that is initialized to a big number.
 		int valueAssignment = 0; // What that will assigned.
 
 		for (NodeId i : functionMsgs.keySet()) { // Create the belief of the agent.
 
 			table = sumMessageAsLong(table, functionMsgs.get(i).getContext());
 
-		}
-
-		if (dust) {
-			table = addLongDust(table);
 		}
 
 		for (int i = 0; i < table.length; i++) { // OmerP - choose the best value assignment out of the table.
@@ -388,13 +384,13 @@ public class MaxSumStandardVarible extends AgentVariableInference {
 
 	}
 
-	protected long[] sumMessageAsLong(long[] table1, double[] table2) {
+	protected double[] sumMessageAsLong(double[] table1, double[] table2) {
 
-		long[] sumTable = new long[table1.length];
+		double[] sumTable = new double[table1.length];
 
 		for (int i = 0; i < table1.length; i++) {
 
-			sumTable[i] = table1[i] + (long) table2[i];
+			sumTable[i] = table1[i] + table2[i];
 
 		}
 
@@ -551,7 +547,7 @@ public class MaxSumStandardVarible extends AgentVariableInference {
 
 	// -----------------------------------------------------------------------------------------------------------//
 
-	///// ******* Clear HashMap without loosing ket ******* ////
+	///// ******* Clear HashMap without loosing key ******* ////
 
 	// OmerP - will clear the HashMap from values double.
 	protected void clearHashMapDoubleValues(HashMap<NodeId, double[]> hashMapToClear) {
@@ -616,7 +612,7 @@ public class MaxSumStandardVarible extends AgentVariableInference {
 
 	}
 
-	protected void printValueAssignment(int valueAssignment, long[] belief) {
+	protected void printValueAssignment(int valueAssignment, double[] belief) {
 
 		System.out.println("Computation Counter:(" + this.computationCounter + ") ,VariableNode:("
 				+ this.getNodeId().getId1() + "," + this.getNodeId().getId2() + ") belief is " + Arrays.toString(belief)
@@ -624,14 +620,13 @@ public class MaxSumStandardVarible extends AgentVariableInference {
 
 	}
 
-	protected void printValueAssignmentIteration(int valueAssignment, long[] belief) {
+	protected void printValueAssignmentIteration(int valueAssignment, double[] belief) {
 
 		System.out.println("Computation Counter:(" + this.numberofIterations + ") ,VariableNode:("
 				+ this.getNodeId().getId1() + "," + this.getNodeId().getId2() + ") belief is " + Arrays.toString(belief)
 				+ ", and value assignment is:" + valueAssignment + ".\n");
 
 	}
-	
 	
 	protected void printDampedTable(double[] oldTable, double[] newTable, double[] dampedTable) {
 

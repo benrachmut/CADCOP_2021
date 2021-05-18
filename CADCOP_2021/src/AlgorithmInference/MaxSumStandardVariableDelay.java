@@ -21,7 +21,6 @@ public class MaxSumStandardVariableDelay extends MaxSumStandardVarible {
 	protected HashMap<NodeId, Boolean> messagesArrivedControl;
 	protected int neighborsSize;
 	protected int timeStampToLook;
-	protected boolean isSync = false;
 	private boolean print = false;
 	private boolean printOnlyValueAssignment = false;
 	protected boolean damping = true;
@@ -42,7 +41,6 @@ public class MaxSumStandardVariableDelay extends MaxSumStandardVarible {
 		updateAlgorithmName();
 	}
 
-	
 	@Override
 	public void updateAlgorithmHeader() {
 		AgentVariable.algorithmHeader = "Damping Factor";
@@ -134,8 +132,8 @@ public class MaxSumStandardVariableDelay extends MaxSumStandardVarible {
 	@Override
 	public void chooseValueLongAssignment() {
 
-		long[] table = new long[this.domainSize];
-		long bestValueAssignment = Long.MAX_VALUE; // Best value that is initialized to a big number.
+		double[] table = new double[this.domainSize];
+		double bestValueAssignment = Double.MAX_VALUE; // Best value that is initialized to a big number.
 		int valueAssignment = 0; // What that will assigned.
 
 		for (NodeId i : neighborsMemory.keySet()) {
@@ -161,9 +159,6 @@ public class MaxSumStandardVariableDelay extends MaxSumStandardVarible {
 
 		}
 
-		if (dust) {
-			table = addLongDust(table);
-		}
 
 		for (int i = 0; i < table.length; i++) { // OmerP - choose the best value assignment out of the table.
 
@@ -192,7 +187,7 @@ public class MaxSumStandardVariableDelay extends MaxSumStandardVarible {
 			double[] sentTable = new double[this.domainSize];
 			sentTable = produceMessage(i, sentTable); // For each specific neighbor, sum all messages excluding the
 														// table of the receiving function node.
-			//sentTable = subtractMinimumValueD(sentTable);
+			sentTable = subtractMinimumValueD(sentTable);
 			MsgAlgorithmFactor newMsg;
 
 			if (damping) {
@@ -215,27 +210,25 @@ public class MaxSumStandardVariableDelay extends MaxSumStandardVarible {
 
 	public void chooseValueLongAssignmentForAsyncVersion() {
 
-		long[] table = new long[this.domainSize];
-		long bestValueAssignment = Long.MAX_VALUE; // Best value that is initialized to a big number.
+		double[] table = new double[this.domainSize];
+		double bestValueAssignment = Double.MAX_VALUE; // Best value that is initialized to a big number.
 		int valueAssignment = 0; // What that will assigned.
 
 		for (NodeId i : functionMsgs.keySet()) { // Create the belief of the agent.
 
 			double[] context = new double[this.domainSize];
 
-			//try {
+			try {
 
 				context = functionMsgs.get(i).getContext();
 
-			//}
+			}
 
-			//catch (NullPointerException e) {context = produceEmptyMessageForNullPointerExeption();}
+			catch (NullPointerException e) {context = produceEmptyMessageForNullPointerExeption();}
 
 			table = sumMessageAsLong(table, context);
 
 		}
-
-		//if (dust) {table = addLongDust(table);}
 
 		for (int i = 0; i < table.length; i++) { // OmerP - choose the best value assignment out of the table.
 
@@ -547,26 +540,7 @@ public class MaxSumStandardVariableDelay extends MaxSumStandardVarible {
 	@Override
 	protected void changeRecieveFlagsToTrue(MsgAlgorithm msgAlgorithm) {
 
-		if (isSync) { // If i am sync the flag will be raised only if all the messages have been
-						// received.
-
-			//System.out.println("VariableNode:(" + this.getNodeId().getId1() + "," + this.getNodeId().getId2() + "), Flag Check.\n");
-
-			if (checkIfReceivedAllMessages()) {
-
-				if (print) {
-					printFlag();
-				}
-				this.canCompute = true;
-
-			}
-
-		} else { // If i am not sync the flag will be raised in each time that i will received a
-					// message.
-
-			this.canCompute = true;
-
-		}
+		this.canCompute = true;
 
 	}
 

@@ -12,26 +12,43 @@ public class MaxSumStandardVariableDelay_SY extends MaxSumStandardVariableDelay{
 	
 	private Collection<MsgAlgorithm> future;
 
+	///// ******* Constructor and initialize Methods******* ////
+	
 	public MaxSumStandardVariableDelay_SY(int dcopId, int D, int id1) {
 		super(dcopId, D, id1);
 		this.future = new ArrayList<MsgAlgorithm>();
 
 	}
 	
-	@Override
-	public void updateAlgorithmName() {
-		if (this.damping == false) {
-			AgentVariable.AlgorithmName = "Max Sum SY";
-		}else {
-			AgentVariable.AlgorithmName = "DMS SY";
+	// -----------------------------------------------------------------------------------------------------------//
 
-		}
+	///// ******* Initialize Methods ******* ////
+
+	// OmerP - Will send new messages for each one of the neighbors upon the
+	@Override
+	public void initialize() {
+
+		initializeNeighborsMemory();
+		produceEmptyMessage();
+		sendMsgs();
+
 	}
 	
-	public void resetAgentGivenParametersV5() {
-		this.future = new ArrayList<MsgAlgorithm>();
+	// -----------------------------------------------------------------------------------------------------------//
+
+	///// ******* Send Message methods ******* ////
+
+	@Override
+	public void sendMsgs() {
+		super.sendMsgs();
+		releaseFutureMsgs();
+
 	}
 	
+	// -----------------------------------------------------------------------------------------------------------//
+
+	///// ******* Receive Message Methods ******* ////
+
 	@Override
 	public boolean updateMessageInContext(MsgAlgorithm msgAlgorithm) {
 
@@ -42,6 +59,10 @@ public class MaxSumStandardVariableDelay_SY extends MaxSumStandardVariableDelay{
 		}
 		return true;
 	}
+	
+	// -----------------------------------------------------------------------------------------------------------//
+
+	///// ******* Handle Flags Methods ******* ////
 	
 	@Override
 	protected void changeRecieveFlagsToTrue(MsgAlgorithm msgAlgorithm) {
@@ -60,13 +81,6 @@ public class MaxSumStandardVariableDelay_SY extends MaxSumStandardVariableDelay{
 		canCompute = true;
 	}
 	
-	@Override
-	public void sendMsgs() {
-		super.sendMsgs();
-		releaseFutureMsgs();
-
-	}
-
 	private void releaseFutureMsgs() {
 		Collection<MsgAlgorithm> toRelease = new HashSet<MsgAlgorithm>();
 		for (MsgAlgorithm m : this.future) {
@@ -78,4 +92,41 @@ public class MaxSumStandardVariableDelay_SY extends MaxSumStandardVariableDelay{
 		this.future.removeAll(toRelease);
 	}
 
+	// -----------------------------------------------------------------------------------------------------------//
+
+	///// ******* Compute ******* ////
+
+	// OmerP - new information has arrived and the variable node will update its
+	// value assignment.
+	@Override
+	public boolean compute() {
+
+		chooseValueLongAssignmentForAsyncVersion();
+		produceNewMessageForAsyncVersion();
+		this.timeStampToLook++;
+		return true;
+	}
+	
+	// -----------------------------------------------------------------------------------------------------------//
+
+	///// ******* Reset Agent Methods ******* ////
+
+	public void resetAgentGivenParametersV5() {
+		this.future = new ArrayList<MsgAlgorithm>();
+	}
+	
+	// -----------------------------------------------------------------------------------------------------------//
+
+	///// ******* Documentation Methods ******* ////
+
+	@Override
+	public void updateAlgorithmName() {
+		if (this.damping == false) {
+			AgentVariable.AlgorithmName = "Max Sum SY";
+		}else {
+			AgentVariable.AlgorithmName = "DMS SY";
+
+		}
+	}
+	
 }

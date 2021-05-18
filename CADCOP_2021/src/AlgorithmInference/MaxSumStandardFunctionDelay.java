@@ -21,7 +21,6 @@ public class MaxSumStandardFunctionDelay extends MaxSumStandardFunction {
 	protected HashMap<NodeId, Boolean> messagesArrivedControl;
 	protected int neighborsSize;
 	protected int timeStampToLook;
-	protected boolean isSync = true;
 	private boolean print = false;
 	protected boolean canCompute = false;
 
@@ -69,8 +68,6 @@ public class MaxSumStandardFunctionDelay extends MaxSumStandardFunction {
 		}
 
 	}
-
-
 
 	// -----------------------------------------------------------------------------------------------------------//
 
@@ -185,20 +182,6 @@ public class MaxSumStandardFunctionDelay extends MaxSumStandardFunction {
 		}
 
 	}
-
-	//protected double[] produceEmptyMessageForNullPointerExeption() {
-
-	//	double[] emptyTable = new double[this.domainSize];
-
-	//	for (int i = 0; i < emptyTable.length; i++) {
-
-	//		emptyTable[i] = 0;
-
-	//	}
-
-	//	return emptyTable;
-
-	//}
 
 	// -----------------------------------------------------------------------------------------------------------//
 
@@ -327,13 +310,13 @@ public class MaxSumStandardFunctionDelay extends MaxSumStandardFunction {
 
 		if (to.equals(temp[0])) {
 
-			//try {
+			try {
 
 				context = variableMsgs.get(temp[1]).getContext();
 
-			//}
+			}
 
-			//catch (NullPointerException e) {context = produceEmptyMessageForNullPointerExeption();}
+			catch (NullPointerException e) {context = produceEmptyMessageForNullPointerExeption();}
 
 			return context; // Will return the message that received from the other variable node that was
 							// received.
@@ -341,18 +324,18 @@ public class MaxSumStandardFunctionDelay extends MaxSumStandardFunction {
 
 		else {
 
-			//try {
+			try {
 
 				context = variableMsgs.get(temp[0]).getContext(); // Will return the message that received from the
 																	// other variable node that was received.
 
-			//}
+			}
 
-			//catch (NullPointerException e) {
+			catch (NullPointerException e) {
 
 				//context = produceEmptyMessageForNullPointerExeption();
 
-			//}
+			}
 
 			return context; // Will return the message that received from the other variable node that was
 							// received.
@@ -453,29 +436,25 @@ public class MaxSumStandardFunctionDelay extends MaxSumStandardFunction {
 	@Override
 	protected void changeRecieveFlagsToTrue(MsgAlgorithm msgAlgorithm) {
 
-		if (isSync) { // If i am sync the flag will be raised only if all the messages have been
-						// received.
-
-			//System.out.println("FunctionNode:(" + this.getNodeId().getId1() + "," + this.getNodeId().getId2() + "), Flag Check.\n");
-
-			if (checkIfReceivedAllMessages()) {
-
-				if (print) {
-					printFlag();
-				}
-				this.canCompute = true;
-
-			}
-
-		} else { // If i am not sync the flag will be raised in each time that i will received a
-					// message.
-
-			this.canCompute = true;
-
-		}
+		this.canCompute = true;
 
 	}
 
+	protected double[] produceEmptyMessageForNullPointerExeption() {
+
+		double[] emptyTable = new double[this.domainSize];
+
+		for (int i = 0; i < emptyTable.length; i++) {
+
+			emptyTable[i] = 0;
+
+		}
+
+		return emptyTable;
+
+	}
+	
+	
 	// OmerP - when a message received will update the context and flag that a
 	// message was received.
 	@Override
@@ -515,12 +494,7 @@ public class MaxSumStandardFunctionDelay extends MaxSumStandardFunction {
 	@Override
 	public void initialize() {
 
-		if (isSync) {
 
-			produceOnlyConstraintMessages();
-			sendMsgs();
-
-		}
 	}
 
 	// OmerP - Reset parameters at the end of the run.

@@ -11,6 +11,8 @@ public class MaxSumStandardFunctionDelay_SY extends MaxSumStandardFunctionDelay{
 
 	private Collection<MsgAlgorithm> future;
 
+	///// ******* Constructor and initialize Methods******* ////
+	
 	public MaxSumStandardFunctionDelay_SY(int dcopId, int D, int id1, int id2, double[][] constraints) {
 		super(dcopId, D, id1, id2, constraints);
 		this.future = new ArrayList<MsgAlgorithm>();
@@ -22,10 +24,36 @@ public class MaxSumStandardFunctionDelay_SY extends MaxSumStandardFunctionDelay{
 		this.future = new ArrayList<MsgAlgorithm>();
 
 	}
-	public void resetAgentGivenParametersV5() {
-		this.future = new ArrayList<MsgAlgorithm>();
+	
+	// -----------------------------------------------------------------------------------------------------------//
+
+	///// ******* Initialize Methods ******* ////
+
+	// OmerP - Will send new messages for each one of the neighbors upon the
+	@Override
+	public void initialize() {
+
+		produceOnlyConstraintMessages();
+		sendMsgs();
+
+		
 	}
 	
+	// -----------------------------------------------------------------------------------------------------------//
+
+	///// ******* Send Message methods ******* ////
+
+	@Override
+	public void sendMsgs() {
+		super.sendMsgs();
+		releaseFutureMsgs();
+
+	}
+	
+	// -----------------------------------------------------------------------------------------------------------//
+
+	///// ******* Receive Message Methods ******* ////
+
 	@Override
 	public boolean updateMessageInContext(MsgAlgorithm msgAlgorithm) {
 
@@ -37,6 +65,10 @@ public class MaxSumStandardFunctionDelay_SY extends MaxSumStandardFunctionDelay{
 		return true;
 	}
 	
+	// -----------------------------------------------------------------------------------------------------------//
+
+	///// ******* Handle Flags Methods ******* ////
+
 	@Override
 	protected void changeRecieveFlagsToTrue(MsgAlgorithm msgAlgorithm) {
 
@@ -54,13 +86,6 @@ public class MaxSumStandardFunctionDelay_SY extends MaxSumStandardFunctionDelay{
 		canCompute = true;
 	}
 	
-	@Override
-	public void sendMsgs() {
-		super.sendMsgs();
-		releaseFutureMsgs();
-
-	}
-
 	private void releaseFutureMsgs() {
 		Collection<MsgAlgorithm> toRelease = new HashSet<MsgAlgorithm>();
 		for (MsgAlgorithm m : this.future) {
@@ -72,5 +97,29 @@ public class MaxSumStandardFunctionDelay_SY extends MaxSumStandardFunctionDelay{
 		this.future.removeAll(toRelease);
 	}
 	
+	// -----------------------------------------------------------------------------------------------------------//
+
+	///// ******* Compute ******* ////
+
+	// OmerP - new information has arrived and the variable node will update its
+	// value assignment.
+	@Override
+	public boolean compute() {
+
+		produceNewMessageForAsyncVersion();
+		this.timeStampToLook++;
+		return true;
+
+	}
+	
+	// -----------------------------------------------------------------------------------------------------------//
+
+	///// ******* Reset Agent Methods ******* ////
+
+	public void resetAgentGivenParametersV5() {
+		this.future = new ArrayList<MsgAlgorithm>();
+	}
+	
+	// -----------------------------------------------------------------------------------------------------------//
 
 }
