@@ -113,7 +113,7 @@ public class MainSimulator {
 	public static int minCostCity=1;
 	public static int maxCostCity=100;
 	public static double dcopCityP2 = 1;// Probability for two values in domain between neighbors to have constraints
-	public static int neighborsOfNonMayers = 3;
+	//public static int neighborsOfNonMayers = 3;
 	public static double exponentForNeighborCitizens = 5;
 	// ------------------------------**Algorithm Selection**
 	/*
@@ -126,7 +126,7 @@ public class MainSimulator {
 	
 	//4,7,11
 	//1,3,8
-	public static int agentType = 2;
+	public static int agentType = 1;
 
 	public static boolean isMaxSumSyDebug = false;
 	public static boolean isThreadDebug = false;
@@ -420,7 +420,7 @@ public class MainSimulator {
 		}
 		
 		if (dcopBenchMark == 4) {
-			ans = new DcopCities(dcopId, A, D, numberOfCities, sdSquareFromCity,minCostCity,maxCostCity, dcopCityP2, neighborsOfNonMayers, exponentForNeighborCitizens);
+			ans = new DcopCities(dcopId, A, D, numberOfCities, sdSquareFromCity,minCostCity,maxCostCity, dcopCityP2, exponentForNeighborCitizens);
 		}
 
 		return ans;

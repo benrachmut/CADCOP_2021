@@ -36,15 +36,13 @@ public class DcopCities extends Dcop {
 
 
 	private double dcopCityP2;
-	private int neighborsOfNonMayers;
 	private Random randomNotHub;
 	private Map<AgentVariable, Double> probsPerAgent;
 
 	public DcopCities(int dcopId, int A, int D, int numberOfCities, double sdSquareFromCity, int minCost, int maxCost,
-			double dcopCityP2, int neighborsOfNonMayers, double exponentForNeighborCitizens) {
+			double dcopCityP2, double exponentForNeighborCitizens) {
 		super(dcopId, A, D);
 		this.exponentForNeighborCitizens = exponentForNeighborCitizens;
-		this.neighborsOfNonMayers = neighborsOfNonMayers;
 		this.dcopCityP2 = dcopCityP2;
 		this.minCost = minCost;
 		this.maxCost = maxCost;
@@ -166,12 +164,12 @@ public class DcopCities extends Dcop {
 
 	@Override
 	protected void setDcopHeader() {
-		Dcop.dcopHeader = "numberOfCities"+","+"neighborsOfNonMayers"+","+"sdSquareFromCity"+","+"exponentForNeighborCitizens";
+		Dcop.dcopHeader = "numberOfCities"+","+","+"sdSquareFromCity"+","+"exponentForNeighborCitizens";
 	}
 
 	@Override
 	protected void setDcopParameters() {
-		Dcop.dcopParameters = this.numberOfCities+","+this.neighborsOfNonMayers+","+this.sdSquareFromCity+","+this.exponentForNeighborCitizens;
+		Dcop.dcopParameters = this.numberOfCities+","+this.sdSquareFromCity+","+this.exponentForNeighborCitizens;
 
 	}
 
@@ -243,22 +241,19 @@ public class DcopCities extends Dcop {
 		for (Entry<AgentVariable, List<AgentVariable>> e : this.citiesAllocation.entrySet()) {
 			allCitizens.addAll(e.getValue());
 			allCitizens.add(e.getKey());
-
 		}
+		
 		for (AgentVariable a1 : allCitizens) {
 			
 			
 			int counter = 0;
-			while (counter < this.neighborsOfNonMayers && a1.getNeigborSetId().size() < this.neighborsOfNonMayers) {
+			while (counter < this.neighborsOfNonMayers){// && a1.getNeigborSetId().size() < this.neighborsOfNonMayers) {
 				//System.out.println(a1.getNeigborSetId());
 				this.probsPerAgent = getProbsPerAgent(a1, allCitizens);
 				Map<AgentVariable, Double> cumulativeProb = getCumulativeProb(probsPerAgent);
-				randomNotHub.nextDouble();
-				randomNotHub.nextDouble();
-				randomNotHub.nextDouble();
 				double d = randomNotHub.nextDouble();
-				for (Entry<AgentVariable, Double> e : cumulativeProb.entrySet()) {
 
+				for (Entry<AgentVariable, Double> e : cumulativeProb.entrySet()) {
 					if (d < e.getValue()) {
 						AgentVariable a2 = e.getKey();
 						this.neighbors.add(new Neighbor(a1, a2, D, minCost, maxCost, dcopId, dcopCityP2));
@@ -309,7 +304,6 @@ public class DcopCities extends Dcop {
 
 			ans.put(a2, p);
 			// System.out.print(p + ",");
-
 		}
 
 		return ans;
