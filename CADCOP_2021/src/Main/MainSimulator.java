@@ -73,9 +73,9 @@ public class MainSimulator {
 	public static int div=1;
 
 	public static int start = 0;
-	public static int end = 100;
+	public static int end = 20;
 	public static int end_temp = start; //DO NOT CHANGE
-	public static long termination = 200000;
+	public static long termination = 50000;
 	private static int everyHowManyExcel = 100;
 
 	// ------------------------------**PROBLEM MANGNITUDE**
@@ -107,14 +107,14 @@ public class MainSimulator {
 	public static int costUbScale = 100;
 	
 	// = cities
-	public static int numberOfCities = 10;
+	public static int numberOfCities = 5;
 	public static double sdSquareFromCity = 0.05;
 	
-	public static int minCostCity=1;
-	public static int maxCostCity=100;
+	public static int minCostCity=100;
+	public static int maxCostCity=200;
 	public static double dcopCityP2 = 1;// Probability for two values in domain between neighbors to have constraints
 	//public static int neighborsOfNonMayers = 3;
-	public static double exponentForNeighborCitizens = 5;
+	public static double exponentForNeighborCitizens =7;
 	// ------------------------------**Algorithm Selection**
 	/*
 	 * 1 = DSA-ASY; 2 = DSA-SY; 3 = MGM-ASY ; 4 = MGM-SY ; 5 = AMDLS_V1 ; 6 =
@@ -156,8 +156,7 @@ public class MainSimulator {
 	public static int downType = 0;
 	public static CreatorDown creatorDown;
 
-//	public static CreatorDelays creatorDelay;
-//	public static CreatorDowns creatorDown;
+
 
 	public static String protocolDelayHeader = "";
 	public static String protocolDownHeader = "";

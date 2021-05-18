@@ -137,11 +137,16 @@ public class DcopCities extends Dcop {
 		for (int i = 0; i < this.numberOfCities; i++) {
 			// take a random index between 0 to size
 			// of given List
+		//	try {
 			int randomIndex = rand.nextInt(agentsWithoutLocations.size());
+			
 			// add element in temporary list
 			agentMayers.add(agentsWithoutLocations.get(randomIndex));
 			// Remove selected element from orginal list
 			agentsWithoutLocations.remove(randomIndex);
+		//	}catch(Exception e) {
+		//		System.out.println();
+		//	}
 		}
 		return agentMayers;
 
@@ -178,11 +183,8 @@ public class DcopCities extends Dcop {
 
 		mayersNeighborsWithOneAnother();
 		//printNeighborsCoordinates();
-
-		
 		otherCitizensNeighborsSelection();
 		//printNeighborsCoordinates();
-
 		if (MainSimulator.isDcopCityDebug) { 
 			// printLocations(); //
 			//printProbForHist();
@@ -194,11 +196,11 @@ public class DcopCities extends Dcop {
 			//printAvgDistances();
 			
 		}
-
+		//System.out.println();
 	}
 
 	
-
+/*
 	private void printLocationOfCiviliens() {
 		System.out.println("Location civil");
 		for (List<AgentVariable> l : this.citiesAllocation.values()) {
@@ -208,7 +210,8 @@ public class DcopCities extends Dcop {
 		}
 		
 	}
-
+*/
+	/*
 	private void printLocationOfMayers() {
 		System.out.println("Location mayers");
 		for (AgentVariable a : this.citiesAllocation.keySet()) {
@@ -216,7 +219,8 @@ public class DcopCities extends Dcop {
 		}
 		
 	}
-
+*/
+	/*
 	private void printProbForHist() {
 		for (Double d : probsPerAgent.values()) {
 			System.out.print(d+",");
@@ -224,7 +228,9 @@ public class DcopCities extends Dcop {
 		
 		System.out.println();
 	}
-
+*/
+	
+	
 	private void printAvgDistances() {
 		double sum = 0; 
 		for (Neighbor n : this.neighbors) {
@@ -245,7 +251,29 @@ public class DcopCities extends Dcop {
 		
 		for (AgentVariable a1 : allCitizens) {
 			
-			
+			Map<AgentVariable, Double> ans = new HashMap<AgentVariable, Double>();
+			List<AgentVariable> allExceptAAndNeigbors = getAllExceptAAndNeigbors(a1, allCitizens);
+			double maxDistance = getMaxDistanceOfA(a1);
+
+			for (AgentVariable a2 : allExceptAAndNeigbors) {
+				
+				double distanceToA1 = a1.getQuadraticDistanceTo(a2.getLocation());
+				double P = Math.pow(1 - (distanceToA1 / maxDistance), this.exponentForNeighborCitizens);
+				
+				//if (a1.getId() == 0 && MainSimulator.isDcopCityDebug) {
+					//System.out.println(P);
+				//}
+				
+				double p = randomNotHub.nextDouble();
+				p = randomNotHub.nextDouble();
+				
+				if (p<P) {
+					this.neighbors.add(new Neighbor(a1, a2, D, minCost, maxCost, dcopId, dcopCityP2));
+				}
+				//ans.put(a2, p);
+				// System.out.print(p + ",");
+			}
+			/*
 			int counter = 0;
 			while (counter < this.neighborsOfNonMayers){// && a1.getNeigborSetId().size() < this.neighborsOfNonMayers) {
 				//System.out.println(a1.getNeigborSetId());
@@ -262,9 +290,11 @@ public class DcopCities extends Dcop {
 					}
 				}
 			}
+			*/
 		}
 	}
 
+	/*
 	private Map<AgentVariable, Double> getCumulativeProb(Map<AgentVariable, Double> probsPerAgent) {
 		probsPerAgent = DcopScaleFreeNetwork.sortByValue(probsPerAgent);
 		Map<AgentVariable, Double> ans = new HashMap<AgentVariable, Double>();
@@ -282,7 +312,8 @@ public class DcopCities extends Dcop {
 
 		return ans;
 	}
-
+*/
+	/*
 	private double getSomeOfSet(Collection<Double> values) {
 		double sum = 0;
 		for (Double d : values) {
@@ -290,7 +321,8 @@ public class DcopCities extends Dcop {
 		}
 		return sum;
 	}
-
+*/
+	/*
 	private Map<AgentVariable, Double> getProbsPerAgent(AgentVariable a1, List<AgentVariable> allCitizents) {
 		Map<AgentVariable, Double> ans = new HashMap<AgentVariable, Double>();
 		List<AgentVariable> allExceptAAndNeigbors = getAllExceptAAndNeigbors(a1, allCitizents);
@@ -308,7 +340,7 @@ public class DcopCities extends Dcop {
 
 		return ans;
 	}
-
+*/
 	private List<AgentVariable> getAllExceptAAndNeigbors(AgentVariable a1, List<AgentVariable> allCitizents) {
 		List<AgentVariable> ans = new ArrayList<AgentVariable>(allCitizents);
 		ans.remove(a1);

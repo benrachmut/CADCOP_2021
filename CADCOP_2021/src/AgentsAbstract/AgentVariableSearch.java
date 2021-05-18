@@ -84,6 +84,11 @@ public abstract class AgentVariableSearch extends AgentVariable {
 	}
 
 	@Override
+	public long getIdleTime() {
+		// TODO Auto-generated method stub
+		return this.idleTime;
+	}
+	@Override
 	public void initialize() {
 		this.sendValueAssignmnetMsgs();
 

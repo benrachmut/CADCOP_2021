@@ -21,7 +21,7 @@ public class NodeId implements Comparable<NodeId> {
 		this.isPlusOne = isPlusOne;
 
 		if (isPlusOne) {
-			this.id1 = id1; //shouldnt be plus one?  
+			this.id1 = id1+1; //shouldnt be plus one?  
 		}else {
 		this.id1 = id1;
 		}
@@ -31,8 +31,8 @@ public class NodeId implements Comparable<NodeId> {
 	}
 	
 	//OmerP - Constructor for Function Node.
-	public NodeId(int id1, int id2, boolean isPlusOne) {
-		this.isPlusOne = isPlusOne;
+	public NodeId(int id1, int id2) {
+		this.isPlusOne = true;
 		this.id1 = id1+1; 
 		this.id2 = id2+1;
 		setType(NodeType.Function);

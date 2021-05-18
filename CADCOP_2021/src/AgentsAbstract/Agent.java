@@ -18,7 +18,6 @@ import Messages.MsgsAgentTimeComparator;
 import Messages.MsgsMailerTimeComparator;
 
 public abstract class Agent implements Runnable, Comparable<Agent> {
-
 	protected Integer id;
 	protected NodeId nodeId;
 
@@ -26,6 +25,7 @@ public abstract class Agent implements Runnable, Comparable<Agent> {
 	protected int domainSize;
 	protected int dcopId;
 	protected int timeStampCounter;
+	protected long idleTime;
 
 	protected boolean isWithTimeStamp;
 	// protected Mailer mailer;
@@ -50,6 +50,7 @@ public abstract class Agent implements Runnable, Comparable<Agent> {
 		isIdle = true;
 		atomicActionCounter = 0;
 		timeObject = new TimeObject(0);
+		idleTime = 0;
 
 	}
 
@@ -76,6 +77,8 @@ public abstract class Agent implements Runnable, Comparable<Agent> {
 		isIdle = true;
 		atomicActionCounter = 0;
 		timeObject.setTimeOfObject(1);
+		idleTime = 0;
+
 	}
 
 	public void setTimeObject(TimeObject input) {
@@ -127,10 +130,13 @@ public abstract class Agent implements Runnable, Comparable<Agent> {
 		long maxAgentTime = msgWithMaxTime.getTimeOfMsg();
 
 		if (this.time <= maxAgentTime) {
+			this.idleTime = this.idleTime + (maxAgentTime - this.time);
 			this.time = maxAgentTime;
 		}
 
 	}
+	
+	abstract public long getIdleTime();
 
 	/**
 	 * 
@@ -177,6 +183,7 @@ public abstract class Agent implements Runnable, Comparable<Agent> {
 				computationCounter = computationCounter + 1;
 				this.timeStampCounter = this.timeStampCounter + 1;
 				if (MainSimulator.isAtomicTime) {
+
 					this.time = this.time + this.atomicActionCounter;
 					this.atomicActionCounter = 0;
 
@@ -372,11 +379,11 @@ public abstract class Agent implements Runnable, Comparable<Agent> {
 
 	public void extractFromInboxUsedByMailerIteration() {
 		if (!this.inbox.isEmpty()) {
-			List<Msg>msgs = this.inbox.extract();
+			List<Msg> msgs = this.inbox.extract();
 			handleMsgs(msgs);
 			msgs.removeAll(msgs);
 		}
-		
+
 	}
 
 }

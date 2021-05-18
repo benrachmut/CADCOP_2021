@@ -220,8 +220,7 @@ public abstract class Dcop {
 		if (agentType == 102) {
 
 			ans = new MaxSumStandardVariableDelay_SY(dcopId, D, agentId); // Sync Split version without memory.
-			MaxSumStandardVariableDelay_SY temp = (MaxSumStandardVariableDelay_SY) ans;
-			temp.updateNodeId();
+			
 		}
 
 		if (agentType == 103) { // To add.
@@ -232,10 +231,8 @@ public abstract class Dcop {
 
 		if (agentType == 104) { // To add.
 
-			// agentId = agentId + 1;
 			ans = new MaxSumStandardVariableDelay(dcopId, D, agentId); // Sync Split version without memory.
-			MaxSumStandardVariableDelay temp = (MaxSumStandardVariableDelay) ans;
-			temp.updateNodeId();
+		
 
 		}
 
@@ -415,7 +412,7 @@ public abstract class Dcop {
 
 			if (agentType == 102) {
 
-				af = new MaxSumSplitConstraintFactorGraphDelay_SY(dcopId, D, av1.getId() + 1, av2.getId() + 1,
+				af = new MaxSumSplitConstraintFactorGraphDelay_SY(dcopId, D, av1.getId() , av2.getId() ,
 						constraints); // Will create a new MaxSumSplitConstraintFactorGraphSync
 				MaxSumSplitConstraintFactorGraphDelay_SY splitConstraintAgent = (MaxSumSplitConstraintFactorGraphDelay_SY) af;
 
@@ -456,7 +453,7 @@ public abstract class Dcop {
 
 			if (agentType == 104) {
 
-				af = new MaxSumSplitConstraintFactorGraphDelay(dcopId, D, av1.getId() + 1, av2.getId() + 1,
+				af = new MaxSumSplitConstraintFactorGraphDelay(dcopId, D, av1.getId() , av2.getId(),
 						constraints); // Will create a new MaxSumSplitConstraintFactorGraphSync
 				MaxSumSplitConstraintFactorGraphDelay splitConstraintAgent = (MaxSumSplitConstraintFactorGraphDelay) af;
 
@@ -798,6 +795,7 @@ public abstract class Dcop {
 
 	// OmerP - Will check the each variable node has the number of function nodes as
 	// its neighbors.
+	/*
 	public void variableNodeDebug() {
 
 		for (Neighbor n : neighbors) {
@@ -880,9 +878,11 @@ public abstract class Dcop {
 		}
 
 	}
-
+*/
 	// OmerP - Will check the each function node has the number of variable nodes as
 	// its neighbors.
+	/*
+	
 	public void functionNodeDebug() {
 
 		for (int i = 0; i < agentFunctions.size(); i++) {
@@ -964,8 +964,9 @@ public abstract class Dcop {
 
 		// -----------------------------------------------------------------------------------------------------------//
 	}
-
+*/
 	// OmerP - Method for debug split constraint factor graph connections
+
 	public void printSplitFunctionNode(AgentFunction agentFunction) {
 
 		MaxSumSplitConstraintFactorGraphSync af = (MaxSumSplitConstraintFactorGraphSync) agentFunction;

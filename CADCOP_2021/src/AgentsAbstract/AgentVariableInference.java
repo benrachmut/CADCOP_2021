@@ -24,11 +24,11 @@ public abstract class AgentVariableInference extends AgentVariable {
 		this.functionMsgs = new TreeMap<NodeId, MsgReceive<double[]>>();
 		this.functionNodes = new TreeMap<NodeId, AgentFunction>();
 		flagOfInferenceForKey = false;
-		this.nodeId = new NodeId(id1);
+		this.nodeId = new NodeId(id1,true);
 
 	}
 	public void meetNeighbor(int neighborId, Integer[][] constraint) {
-		this.neighborsConstraint.put(new NodeId(neighborId), constraint);
+		this.neighborsConstraint.put(new NodeId(neighborId,true), constraint);
 	}
 	
 	public int getFunctionMsgsSize() {
@@ -36,12 +36,14 @@ public abstract class AgentVariableInference extends AgentVariable {
 		return functionMsgs.size();
 
 	}
+	/*
 	public Integer[][] getMatrixWithAgent(int i) {
 		if (this.neighborsConstraint.containsKey(new NodeId(i))) {
 			return this.neighborsConstraint.get(new NodeId(i));
 		}
 		return null;
 	}
+	*/
 	@Override
 	public void resetAgentGivenParametersV2() {
 		this.functionMsgs = Agent.resetMapToValueNull(this.functionMsgs);
@@ -124,16 +126,18 @@ public abstract class AgentVariableInference extends AgentVariable {
 	protected void updateAgentTime(List<? extends Msg> messages) {
 		Msg msgWithMaxTime = Collections.max(messages, new MsgsMailerTimeComparator());
 
-		int maxAgentTime = msgWithMaxTime.getTimeOfMsg();
-
+		long maxAgentTime = msgWithMaxTime.getTimeOfMsg();
+		synchronized (timeObject) {	
 		if (this.timeObject.getTimeOfObject()<= maxAgentTime) {
-			synchronized (timeObject) {
-			int oldTime = this.timeObject.getTimeOfObject();
+					
 			this.timeObject.setTimeOfObject(maxAgentTime);
 			}
 		}
 	}
 	
+	public long getIdleTime() {
+		return this.timeObject.getIdleTime();
+	}
 	@Override
 	public boolean reactionToAlgorithmicMsgs() {
 		if (MainSimulator.isThreadDebug) {
@@ -155,8 +159,8 @@ public abstract class AgentVariableInference extends AgentVariable {
 				this.timeStampCounter = this.timeStampCounter + 1;
 				if (MainSimulator.isAtomicTime) {
 					synchronized (timeObject) {
-						int currentTime = this.timeObject.getTimeOfObject();
-						int updatedTime = currentTime + this.atomicActionCounter;
+						long currentTime = this.timeObject.getTimeOfObject();
+						long updatedTime = currentTime + this.atomicActionCounter;
 						this.timeObject.setTimeOfObject(updatedTime);
 					}
 				
@@ -164,8 +168,8 @@ public abstract class AgentVariableInference extends AgentVariable {
 
 				} else {
 					synchronized (timeObject) {
-						int currentTime = this.timeObject.getTimeOfObject();
-						int updatedTime = currentTime + 1;
+						long currentTime = this.timeObject.getTimeOfObject();
+						long updatedTime = currentTime + 1;
 						this.timeObject.setTimeOfObject(updatedTime);
 					}
 				}

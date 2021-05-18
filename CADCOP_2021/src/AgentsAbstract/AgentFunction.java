@@ -37,6 +37,10 @@ public abstract class AgentFunction extends Agent {
 
 	///// ******* Initialize Methods ******* ////
 
+	public long getIdleTime() {
+		throw new RuntimeException ("Function node does not really have a clock :/");
+	}
+	
 	public void meetVariables(NodeId VariableOneNodeId, NodeId VariableTwoNodeId) {
 
 		this.variableMsgs.put(VariableOneNodeId, null);
@@ -171,11 +175,10 @@ public abstract class AgentFunction extends Agent {
 	protected void updateAgentTime(List<? extends Msg> messages) {
 		Msg msgWithMaxTime = Collections.max(messages, new MsgsMailerTimeComparator());
 
-		int maxAgentTime = msgWithMaxTime.getTimeOfMsg();
-
+		long maxAgentTime = msgWithMaxTime.getTimeOfMsg();
+		synchronized (timeObject) {
 		if (this.timeObject.getTimeOfObject()<= maxAgentTime) {
-			synchronized (timeObject) {
-			int oldTime = this.timeObject.getTimeOfObject();
+			
 			this.timeObject.setTimeOfObject(maxAgentTime);
 			}
 		}
@@ -200,8 +203,8 @@ public abstract class AgentFunction extends Agent {
 				this.timeStampCounter = this.timeStampCounter + 1;
 				if (MainSimulator.isAtomicTime) {
 					synchronized (timeObject) {
-						int currentTime = this.timeObject.getTimeOfObject();
-						int updatedTime = currentTime + this.atomicActionCounter;
+						long currentTime = this.timeObject.getTimeOfObject();
+						long updatedTime = currentTime + this.atomicActionCounter;
 						this.timeObject.setTimeOfObject(updatedTime);
 					}
 				
@@ -209,8 +212,8 @@ public abstract class AgentFunction extends Agent {
 
 				} else {
 					synchronized (timeObject) {
-						int currentTime = this.timeObject.getTimeOfObject();
-						int updatedTime = currentTime + 1;
+						long currentTime = this.timeObject.getTimeOfObject();
+						long updatedTime = currentTime + 1;
 						this.timeObject.setTimeOfObject(updatedTime);
 					}
 				}
