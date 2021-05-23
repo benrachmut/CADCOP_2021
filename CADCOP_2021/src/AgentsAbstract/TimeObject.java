@@ -16,8 +16,13 @@ public class TimeObject {
 		return timeOfObject;
 	}
 
+	
+	public synchronized void addIdealTime(long addToIdeal) {
+		this.idleTime = this.idleTime+addToIdeal;
+
+	}
 	public synchronized void setTimeOfObject(long timeOfObject) {
-		this.idleTime = this.idleTime+(timeOfObject-this.timeOfObject);
+	
 		this.timeOfObject = timeOfObject;
 	}
 

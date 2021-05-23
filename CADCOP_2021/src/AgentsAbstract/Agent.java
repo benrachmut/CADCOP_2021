@@ -18,6 +18,8 @@ import Messages.MsgsAgentTimeComparator;
 import Messages.MsgsMailerTimeComparator;
 
 public abstract class Agent implements Runnable, Comparable<Agent> {
+	
+	public static int totalIdealTime;
 	protected Integer id;
 	protected NodeId nodeId;
 
@@ -25,7 +27,7 @@ public abstract class Agent implements Runnable, Comparable<Agent> {
 	protected int domainSize;
 	protected int dcopId;
 	protected int timeStampCounter;
-	protected long idleTime;
+	protected long idealTime;
 
 	protected boolean isWithTimeStamp;
 	// protected Mailer mailer;
@@ -50,7 +52,7 @@ public abstract class Agent implements Runnable, Comparable<Agent> {
 		isIdle = true;
 		atomicActionCounter = 0;
 		timeObject = new TimeObject(0);
-		idleTime = 0;
+		idealTime = 0;
 
 	}
 
@@ -68,6 +70,7 @@ public abstract class Agent implements Runnable, Comparable<Agent> {
 	}
 
 	public void resetAgent() {
+		totalIdealTime = 0;
 		this.time = 1;
 		this.timeStampCounter = 0;
 		computationCounter = 0.0;
@@ -77,7 +80,7 @@ public abstract class Agent implements Runnable, Comparable<Agent> {
 		isIdle = true;
 		atomicActionCounter = 0;
 		timeObject.setTimeOfObject(1);
-		idleTime = 0;
+		idealTime = 0;
 
 	}
 
@@ -126,16 +129,50 @@ public abstract class Agent implements Runnable, Comparable<Agent> {
 
 	protected void updateAgentTime(List<? extends Msg> messages) {
 		Msg msgWithMaxTime = Collections.max(messages, new MsgsMailerTimeComparator());
-
 		long maxAgentTime = msgWithMaxTime.getTimeOfMsg();
 
 		if (this.time <= maxAgentTime) {
-			this.idleTime = this.idleTime + (maxAgentTime - this.time);
+			if (MainSimulator.isIdealTimeDebug && this.id==0) {
+				System.out.println("--------------");
+
+				System.out.println(this+" time was "+this.time);
+				System.out.println(this+ " ideal time was "+this.idealTime);
+				System.out.println(this+" recieve message with max time from A_"+msgWithMaxTime.getSenderId().getId1());
+				System.out.println("A_"+msgWithMaxTime.getSenderId().getId1()+" msg time is "+msgWithMaxTime.getTimeOfMsg());
+				System.out.println(this+ " time will be "+maxAgentTime);
+				System.out.println(this+ " ideal time will be "+(this.idealTime + (maxAgentTime - this.time)));
+
+
+				
+				
+				System.out.println("--------------");
+
+				//this.idealTime = this.idealTime + (maxAgentTime - this.time);
+				//this.time = maxAgentTime;
+			}
+
+			//long myIdealTime = maxAgentTime - this.time;
+			//long marginalIdealTime = myIdealTime - totalIdealTime
+			
+			this.idealTime = this.idealTime + (maxAgentTime - this.time);
 			this.time = maxAgentTime;
+
 		}
 
 	}
-	
+
+	protected void updateAgentTimeForInference(List<? extends Msg> messages) {
+		Msg msgWithMaxTime = Collections.max(messages, new MsgsMailerTimeComparator());
+
+		long maxAgentTime = msgWithMaxTime.getTimeOfMsg();
+		synchronized (timeObject) {
+			if (this.timeObject.getTimeOfObject() <= maxAgentTime) {
+				this.timeObject.addIdealTime(maxAgentTime - this.timeObject.getTimeOfObject());
+				this.timeObject.setTimeOfObject(maxAgentTime);
+			}
+		}
+	}
+
 	abstract public long getIdleTime();
 
 	/**

@@ -124,15 +124,7 @@ public abstract class AgentVariableInference extends AgentVariable {
 
 
 	protected void updateAgentTime(List<? extends Msg> messages) {
-		Msg msgWithMaxTime = Collections.max(messages, new MsgsMailerTimeComparator());
-
-		long maxAgentTime = msgWithMaxTime.getTimeOfMsg();
-		synchronized (timeObject) {	
-		if (this.timeObject.getTimeOfObject()<= maxAgentTime) {
-					
-			this.timeObject.setTimeOfObject(maxAgentTime);
-			}
-		}
+		updateAgentTimeForInference(messages);
 	}
 	
 	public long getIdleTime() {

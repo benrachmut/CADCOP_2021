@@ -56,7 +56,7 @@ public class MainSimulator {
 	//public static int dividAtomicTime = 1;
 	
 	public static int multiplicationTime = 1;//2;
-	public static int howManyIterationForCalculation = 100; // sparse = 100,dense=100
+	public static int howManyIterationForCalculation = 1000;//10000;//100000; // sparse = 100,dense=100
 
 	
 
@@ -73,14 +73,13 @@ public class MainSimulator {
 	public static int div=1;
 
 	public static int start = 0;
-	public static int end = 100;
+	public static int end = 10;
 	public static int end_temp = start; //DO NOT CHANGE
-	public static long termination = 100000;
-	private static int everyHowManyExcel = 100;
+	public static long termination = 50002;//30000010;
+	private static int everyHowManyExcel = 50;
 
 	// ------------------------------**PROBLEM MANGNITUDE**
 	public static int A = 50; // amount of agents
-	
 	private static int D = 10;
 
 	// public static int D = -1; // if D or costParameter < 0 use default
@@ -89,22 +88,22 @@ public class MainSimulator {
 	/*
 	 * 1 = Random uniform; 2 = Graph Coloring; 3 = Scale Free Network
 	 */
-	public static int dcopBenchMark = 4;
+	public static int dcopBenchMark = 1;
 	// 1 = Random uniform
-	public static double dcopUniformP1 =0.2;
+	public static double dcopUniformP1 =0.1;
 	public static double dcopUniformP2 = 1;// Probability for two values in domain between neighbors to have constraints
-	public static int costLbUniform = 1;
-	public static int costUbUniform = 100;
+	public static int costLbUniform = 100;
+	public static int costUbUniform = 200;
 	// 2 = Graph Coloring
 	public static double dcopGraphColoringP1 = 0.05;// Probability for agents to have constraints
-	public static int costLbColor = 10;
-	public static int costUbColor = 100;
+	public static int costLbColor = 100;
+	public static int costUbColor = 200;
 	// 3 = scale free
 	public static int dcopScaleHubs = 10; // number of agents with central weight
 	public static int dcopScaleNeighbors = 3; // number of neighbors (not including policy of hubs
 	public static double dcopScaleP2 = 1;// Probability for two values in domain between neighbors to have constraints
-	public static int costLbScale = 1;
-	public static int costUbScale = 100;
+	public static int costLbScale = 100;
+	public static int costUbScale = 200;
 	
 	// = cities
 	public static int numberOfCities = 5;
@@ -114,19 +113,19 @@ public class MainSimulator {
 	public static int maxCostCity=200;
 	public static double dcopCityP2 = 1;// Probability for two values in domain between neighbors to have constraints
 	//public static int neighborsOfNonMayers = 3;
-	public static double exponentForNeighborCitizens =7;
+	public static double exponentForNeighborCitizens =3;
 	// ------------------------------**Algorithm Selection**
 	/*
 	 * 1 = DSA-ASY; 2 = DSA-SY; 3 = MGM-ASY ; 4 = MGM-SY ; 5 = AMDLS_V1 ; 6 =
 	 * AMDLS_V2; 7 = AMDLS_V3; 8 = DSA_SDP-ASY ; 9 = DSA_SDP-SY ; 10 = MGM2-ASY  ; 11 = MGM2-SY
 	 *  12 = AMDLS_V4 send all 
 	 * ------- 100 =
-	 * 101 = MaxSum-SY; 101 = MaxSum_split-SY; 103 = MaxSum-ASY; 104 = MaxSum_split-ASY;
+	 * 101 = MaxSum-SY; 102 = MaxSum_split-SY; 103 = MaxSum-ASY; 104 = MaxSum_split-ASY;
 	 */
 	
 	//4,7,11
 	//1,3,8
-	public static int agentType = 1;
+	public static int agentType = 103;
 
 	public static boolean isMaxSumSyDebug = false;
 	public static boolean isThreadDebug = false;
@@ -135,7 +134,7 @@ public class MainSimulator {
 	//public static boolean isAMDLSdebug = true;
 	public static boolean isAMDLSDistributedDebug = false;
 	public static boolean isAnytimeThreadDebug = false;
-	public static boolean isAnytimeDebug = true;
+	public static boolean isAnytimeDebug = false;
 	public static boolean isMaxSumMailerDebug = false; 
 	public static boolean isFactorGraphDebug = false;
 	public static boolean isMGM2Debug = false;
@@ -143,11 +142,12 @@ public class MainSimulator {
 	public static boolean isMaxSumThreadDebug = false;
 	public static boolean is2OptDebug = false;
 	public static boolean isDcopCityDebug = false;
+	public static boolean isIdealTimeDebug = false;
 
 	/*
 	 * delayTypes: 0 = non, 1 = normal, 2 = uniform, 3 = Exponential, 4 = distancePois , 5 = Possion, 
 	 */
-	public static int delayType = 4;
+	public static int delayType = 2;
 	public static CreatorDelays creatorDelay;
 
 	/*

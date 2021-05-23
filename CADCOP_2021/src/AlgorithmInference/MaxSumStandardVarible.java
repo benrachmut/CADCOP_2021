@@ -14,7 +14,7 @@ import Messages.MsgAlgorithm;
 import Messages.MsgAlgorithmFactor;
 import Messages.MsgReceive;
 
-public class MaxSumStandardVarible extends AgentVariableInference {
+public  class  MaxSumStandardVarible extends AgentVariableInference {
 
 	///// ******* Variables ******* ////
 

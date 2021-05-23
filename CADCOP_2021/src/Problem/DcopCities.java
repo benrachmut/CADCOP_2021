@@ -185,6 +185,7 @@ public class DcopCities extends Dcop {
 		//printNeighborsCoordinates();
 		otherCitizensNeighborsSelection();
 		//printNeighborsCoordinates();
+		//System.out.println();
 		if (MainSimulator.isDcopCityDebug) { 
 			// printLocations(); //
 			//printProbForHist();

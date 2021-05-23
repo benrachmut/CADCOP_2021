@@ -39,6 +39,8 @@ public class MaxSumSplitConstraintFactorGraphDelay extends MaxSumStandardFunctio
 	
 
 }
+	
+	
 
 	///// ******* Initialize Methods ******* ////
 	@Override

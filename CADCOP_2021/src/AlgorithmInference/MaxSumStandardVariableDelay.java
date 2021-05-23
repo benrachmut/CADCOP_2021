@@ -57,7 +57,6 @@ public class MaxSumStandardVariableDelay extends MaxSumStandardVarible {
 			AgentVariable.AlgorithmName = "Max Sum ASY";
 		}else {
 			AgentVariable.AlgorithmName = "DMS ASY";
-
 		}
 	}
 	
